@@ -22,7 +22,8 @@ class GameScene: SKScene {
    static let cenitpedeBody = prototypeNodes.childNode(withName: "CentipedeBody")!
    
    /// \ref issue9
-   static func makeCentipedeBodySegment() -> SKSpriteNode {
+You    static func makeCentipedeBodySegment() -> SKSpriteNode {
+   static let prototypeNodes = SKScene(fileNamed: "PrototypesScene.sks")!
       let newBodySegement = GameScene.cenitpedeBody.copy() as! SKSpriteNode
       newBodySegement.isPaused = false
       return newBodySegement
@@ -61,6 +62,12 @@ class GameScene: SKScene {
       addChild(newSegment0)
       let newSegment1 = GameScene.makeCentipedeBodySegment()
       newSegment1.position = convertGAtoScene(gaX: 24, gaY: 39)
+      //print("\(GameScene.cenitpedeBody)")
+      let newSegment0 = GameScene.makeCentipedeBodySegment()
+      newSegment0.position = CGPoint(x: convertGAXToSceneX(gaX: 0), y: convertGAYToSceneY(gaY: 0))
+      addChild(newSegment0)
+      let newSegment1 = GameScene.makeCentipedeBodySegment()
+      newSegment1.position = CGPoint(x: convertGAXToSceneX(gaX: 24), y: convertGAYToSceneY(gaY: 39))
       addChild(newSegment1)
    }
    
