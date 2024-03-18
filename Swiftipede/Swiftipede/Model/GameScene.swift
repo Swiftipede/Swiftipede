@@ -12,15 +12,24 @@ class GameScene: SKScene {
    static let gameAreaWidth = Int32(25)
    static let gameAreaHeight = Int32(40)
    
+   static let prototypeNodes = SKScene(fileNamed: "PrototypesScene.sks")!
+   static let cenitpedeBody = prototypeNodes.childNode(withName: "CentipedeBody")!
+   
+   static func makeCentipedeBodySegment() -> SKSpriteNode {
+      let newBodySegement = GameScene.cenitpedeBody.copy() as! SKSpriteNode
+      newBodySegement.isPaused = false
+      return newBodySegement
+   }
+   
    /// \ref issue5 : Convert from game coordinates to scene coordinates
-   func convertGAXToSceneX(gaX : CGFloat) -> CGFloat {
-      return gaX * frame.width / CGFloat(GameScene.gameAreaWidth)
+   func convertGAXToSceneX(gaX : Int32) -> CGFloat {
+      return (0.5 + CGFloat(gaX)) * frame.width / CGFloat(GameScene.gameAreaWidth)
       
    }
    
    /// \ref issue5 : Convert from game coordinates to scene coordinates
-   func convertGAYToSceneY(gaY : CGFloat) -> CGFloat {
-      return gaY * frame.height / CGFloat(GameScene.gameAreaHeight)
+   func convertGAYToSceneY(gaY : Int32) -> CGFloat {
+      return (0.5 + CGFloat(gaY)) * frame.height / CGFloat(GameScene.gameAreaHeight)
    }
    
    /// \ref issue5 : Convert from game coordinates to scene coordinates
@@ -34,6 +43,13 @@ class GameScene: SKScene {
    }
 
    override func didMove(to view: SKView) {
+      //print("\(GameScene.cenitpedeBody)")
+      let newSegment0 = GameScene.makeCentipedeBodySegment()
+      newSegment0.position = CGPoint(x: convertGAXToSceneX(gaX: 0), y: convertGAYToSceneY(gaY: 0))
+      addChild(newSegment0)
+      let newSegment1 = GameScene.makeCentipedeBodySegment()
+      newSegment1.position = CGPoint(x: convertGAXToSceneX(gaX: 24), y: convertGAYToSceneY(gaY: 39))
+      addChild(newSegment1)
    }
    
    override func update(_ currentTime: TimeInterval) {
