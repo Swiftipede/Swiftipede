@@ -24,21 +24,31 @@ class GameScene: SKScene {
    /// \ref issue7 \ref issue8
    static let cenitpedeHead = prototypeNodes.childNode(withName: "CentipedeHead")!
    
+   /// \ref issue11 \ref issue12
+   static let cenitpedeTail = prototypeNodes.childNode(withName: "CentipedeTail")!
+
    /// \ref issue6
    static let mushroom100 = prototypeNodes.childNode(withName: "Mushroom100")!
 
    /// \ref issue9
    static func makeCentipedeBodySegment() -> SKSpriteNode {
-      let newBodySegement = GameScene.cenitpedeBody.copy() as! SKSpriteNode
-      newBodySegement.isPaused = false
-      return newBodySegement
+      let newSegement = GameScene.cenitpedeBody.copy() as! SKSpriteNode
+      newSegement.isPaused = false
+      return newSegement
    }
 
    /// \ref issue9
    static func makeCentipedeHeadSegment() -> SKSpriteNode {
-      let newHeadSegement = GameScene.cenitpedeHead.copy() as! SKSpriteNode
-      newHeadSegement.isPaused = false
-      return newHeadSegement
+      let newSegement = GameScene.cenitpedeHead.copy() as! SKSpriteNode
+      newSegement.isPaused = false
+      return newSegement
+   }
+
+   /// \ref issue11
+   static func makeCentipedeTailSegment() -> SKSpriteNode {
+      let newSegement = GameScene.cenitpedeTail.copy() as! SKSpriteNode
+      newSegement.isPaused = false
+      return newSegement
    }
 
    /// \ref issue9
@@ -75,7 +85,10 @@ class GameScene: SKScene {
       let newSegment1 = GameScene.makeCentipedeHeadSegment()
       newSegment1.position = convertGAtoScene(gaX: 24, gaY: 39)
       addChild(newSegment1)
-      
+      let newSegment2 = GameScene.makeCentipedeTailSegment()
+      newSegment2.position = convertGAtoScene(gaX: 13, gaY: 20)
+      addChild(newSegment2)
+
       let newMushroom = (GameScene.mushroom100.copy() as! SKSpriteNode)
       newMushroom.position = convertGAtoScene(gaX: 12, gaY: 20)
       addChild(newMushroom)
