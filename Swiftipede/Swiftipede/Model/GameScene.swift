@@ -43,7 +43,7 @@ class GameScene: SKScene {
       newSegement.isPaused = false
       return newSegement
    }
-
+   
    /// \ref issue11
    static func makeCentipedeTailSegment() -> SKSpriteNode {
       let newSegement = GameScene.cenitpedeTail.copy() as! SKSpriteNode
