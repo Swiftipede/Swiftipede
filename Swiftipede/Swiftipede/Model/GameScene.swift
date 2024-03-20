@@ -21,6 +21,9 @@ class GameScene: SKScene {
    /// \ref issue9
    static let cenitpedeBody = prototypeNodes.childNode(withName: "CentipedeBody")!
    
+   /// \ref issue6
+   static let mushroom100 = prototypeNodes.childNode(withName: "Mushroom100")!
+
    /// \ref issue9
    static func makeCentipedeBodySegment() -> SKSpriteNode {
       let newBodySegement = GameScene.cenitpedeBody.copy() as! SKSpriteNode
@@ -62,6 +65,10 @@ class GameScene: SKScene {
       let newSegment1 = GameScene.makeCentipedeBodySegment()
       newSegment1.position = convertGAtoScene(gaX: 24, gaY: 39)
       addChild(newSegment1)
+      
+      let newMushroom = (GameScene.mushroom100.copy() as! SKSpriteNode)
+      newMushroom.position = convertGAtoScene(gaX: 12, gaY: 20)
+      addChild(newMushroom)
    }
    
    override func update(_ currentTime: TimeInterval) {
