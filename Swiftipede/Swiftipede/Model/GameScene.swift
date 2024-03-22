@@ -84,7 +84,10 @@ class GameScene: SKScene {
       let newSegment0 = GameScene.makeCentipedeBodySegment()
       newSegment0.position = convertGAtoScene(gaX: 0, gaY: 0)
       addChild(newSegment0)
+      
+      centipede.addSegments(number: 11, scene: self)
       centipede.moveHead(scene: self)
+       
       let newSegment2 = GameScene.makeCentipedeTailSegment()
       newSegment2.position = convertGAtoScene(gaX: 13, gaY: 20)
       addChild(newSegment2)
