@@ -51,6 +51,8 @@ class GameScene: SKScene {
       return newSegement
    }
 
+   var centipede = Centipede()
+   
    /// \ref issue9
    func convertGAtoScene(gaX: Int32, gaY:Int32) -> CGPoint {
       return CGPoint(x: convertGAXToSceneX(gaX: gaX), y: convertGAYToSceneY(gaY: gaY))
@@ -82,9 +84,7 @@ class GameScene: SKScene {
       let newSegment0 = GameScene.makeCentipedeBodySegment()
       newSegment0.position = convertGAtoScene(gaX: 0, gaY: 0)
       addChild(newSegment0)
-      let newSegment1 = GameScene.makeCentipedeHeadSegment()
-      newSegment1.position = convertGAtoScene(gaX: 24, gaY: 39)
-      addChild(newSegment1)
+      centipede.moveHead(scene: self)
       let newSegment2 = GameScene.makeCentipedeTailSegment()
       newSegment2.position = convertGAtoScene(gaX: 13, gaY: 20)
       addChild(newSegment2)
