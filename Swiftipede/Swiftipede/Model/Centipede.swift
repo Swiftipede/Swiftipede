@@ -37,23 +37,19 @@ class Centipede {
    func addSegments(number : Int32, scene: GameScene) {
       for _ in 0..<number {
          let newSegment = CentipedeSegment()
+         newSegment.becomeBody()
          segements.append(newSegment)
          scene.addChild(newSegment)
-         let destination = scene.convertGAtoScene(gaX: headDestinationGAX, gaY: headDestinationGAY)
-         newSegment.position = destination
-         newSegment.becomeBody()
+         newSegment.position = scene.convertGAtoScene(gaX: headDestinationGAX, gaY: headDestinationGAY)
       }
-      let head = segements[0]
-      let headDestination = scene.convertGAtoScene(gaX: headDestinationGAX, gaY: headDestinationGAY)
-      head.position = headDestination
-      head.becomeHead()
-      if 1 < number {
-         segements[segements.count - 1].becomeTail()
+      if 0 < segements.count {
+         segements[0].becomeHead()
+         if 1 < segements.count { segements[segements.count - 1].becomeTail() }
       }
    }
    
    func moveHead(scene : GameScene) {
-      if  0 < segements.count {
+      if 0 < segements.count {
          for index in (1..<segements.count).reversed() {
             let currentSegment = segements[index]
             let predecesorSegment = segements[index - 1]
@@ -66,8 +62,7 @@ class Centipede {
          headDestinationGAX += xDirection
          if headDestinationGAX >= GameScene.gameAreaWidth || headDestinationGAX < 0 {
             headDestinationGAY += yDirection
-            if headDestinationGAY >= GameScene.gameAreaHeight ||
-                  headDestinationGAY < 0 {
+            if headDestinationGAY >= GameScene.gameAreaHeight || headDestinationGAY < 0 {
                yDirection *= -1
                headDestinationGAY += yDirection * 2
             }
