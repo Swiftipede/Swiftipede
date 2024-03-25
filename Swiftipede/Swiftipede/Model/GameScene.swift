@@ -30,6 +30,9 @@ class GameScene: SKScene {
    /// \ref issue6
    static let mushroom100 = prototypeNodes.childNode(withName: "Mushroom100")!
 
+   /// \ref issue20
+   static let shooter = prototypeNodes.childNode(withName: "Shooter")!
+
    /// \ref issue9
    static func makeCentipedeBodySegment() -> SKSpriteNode {
       let newSegement = GameScene.cenitpedeBody.copy() as! SKSpriteNode
@@ -94,6 +97,10 @@ class GameScene: SKScene {
       centipede.moveHead(scene: self)
  
       spawnMushrooms(number: 70)
+      
+      let shooter = GameScene.shooter.copy() as! SKSpriteNode
+      addChild(shooter)
+      shooter.position = CGPoint(x: frame.midX, y: 60) //<- Arbitrary start height
    }
    
    override func update(_ currentTime: TimeInterval) {
