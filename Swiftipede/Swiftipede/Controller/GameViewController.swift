@@ -16,6 +16,13 @@ class GameViewController: UIViewController {
       super.viewDidLoad()
    }
    
+   @IBAction func moveShooter(recognizer: UIPanGestureRecognizer) {
+      let scene = gameView!.scene as! GameScene
+      let viewPosition = recognizer.location(in: gameView!)
+      let scenePosition = scene.convertPoint(fromView: viewPosition)
+      scene.moveShooter(position: scenePosition)
+   }
+   
    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
       if UIDevice.current.userInterfaceIdiom == .phone {
          return .allButUpsideDown

@@ -55,6 +55,7 @@ class GameScene: SKScene {
    }
 
    var centipede = Centipede()
+   var shooter = GameScene.shooter.copy() as! SKSpriteNode
    
    /// \ref issue9
    func convertGAtoScene(gaX: Int32, gaY:Int32) -> CGPoint {
@@ -98,9 +99,12 @@ class GameScene: SKScene {
  
       spawnMushrooms(number: 70)
       
-      let shooter = GameScene.shooter.copy() as! SKSpriteNode
       addChild(shooter)
       shooter.position = CGPoint(x: frame.midX, y: 60) //<- Arbitrary start height
+   }
+   
+   func moveShooter(position: CGPoint) {
+      shooter.position = position
    }
    
    override func update(_ currentTime: TimeInterval) {
