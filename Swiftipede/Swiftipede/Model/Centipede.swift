@@ -48,6 +48,14 @@ class Centipede {
       }
    }
    
+   func hasCollisions(gaX: Int32, gaY: Int32, scene: GameScene) -> Bool {
+      let candidatePosition = scene.convertGAtoScene(gaX: gaX, gaY: gaY)
+      let collideNodes = scene.nodes(at: candidatePosition).filter { (node : SKNode) in
+         node !== scene
+      }
+      return 0 < collideNodes.count
+   }
+   
    func moveHead(scene : GameScene) {
       if 0 < segements.count {
          for index in (1..<segements.count).reversed() {
@@ -60,7 +68,8 @@ class Centipede {
          
          let head = segements[0]
          headDestinationGAX += xDirection
-         if headDestinationGAX >= GameScene.gameAreaWidth || headDestinationGAX < 0 {
+         if headDestinationGAX >= GameScene.gameAreaWidth || headDestinationGAX < 0 || 
+               hasCollisions(gaX: headDestinationGAX, gaY: headDestinationGAY, scene: scene) {
             headDestinationGAY += yDirection
             if headDestinationGAY >= GameScene.gameAreaHeight || headDestinationGAY < 0 {
                yDirection *= -1
