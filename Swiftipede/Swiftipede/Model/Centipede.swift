@@ -4,18 +4,21 @@ class CentipedeSegment : SKNode {
    var segmentImage = GameScene.makeCentipedeBodySegment()
    
    func becomeBody() {
+      if nil != segmentImage.parent { segmentImage.removeFromParent() }
+      segmentImage = GameScene.makeCentipedeBodySegment()
+      segmentImage.position = CGPoint(x:0, y:0)
       addChild(segmentImage)
    }
    
    func becomeHead() {
-      segmentImage.removeFromParent()
+      if nil != segmentImage.parent { segmentImage.removeFromParent() }
       segmentImage = GameScene.makeCentipedeHeadSegment()
       segmentImage.position = CGPoint(x:0, y:0)
       addChild(segmentImage)
    }
    
    func becomeTail() {
-      segmentImage.removeFromParent()
+      if nil != segmentImage.parent { segmentImage.removeFromParent() }
       segmentImage = GameScene.makeCentipedeTailSegment()
       segmentImage.position = CGPoint(x:0, y:0)
       addChild(segmentImage)
@@ -25,7 +28,6 @@ class CentipedeSegment : SKNode {
 class Centipede {
    var piriodBetweenMoves = TimeInterval(0.25)
    var segements = [CentipedeSegment]()
-   let head = SKNode()
    
    var headDestinationGAX = Int32(-1)
    var headDestinationGAY = Int32(39)
