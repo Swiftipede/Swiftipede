@@ -74,27 +74,26 @@ class GameScene: SKScene {
       return position.x * CGFloat(GameScene.gameAreaWidth) / frame.width
    }
    
+   func spawnMushrooms(number : UInt32) {
+      for _ in 0..<number {
+         let mushroomGAX = Int32.random(in: 0..<GameScene.gameAreaWidth)
+         let mushroomGAY = Int32.random(in: 6..<GameScene.gameAreaHeight) //<- Arbitrary constant 6
+         let newMushroom = (GameScene.mushroom100.copy() as! SKSpriteNode)
+         newMushroom.position = convertGAtoScene(gaX: mushroomGAX, gaY: mushroomGAY)
+         addChild(newMushroom)
+      }
+   }
+   
    /// \ref issue5 : Convert from game coordinates to scene coordinates
    func convertSceneYtoGAY(position: CGPoint) -> CGFloat {
       return position.y * CGFloat(GameScene.gameAreaHeight) / frame.height
    }
 
    override func didMove(to view: SKView) {
-      // \ref issue9
-      let newSegment0 = GameScene.makeCentipedeBodySegment()
-      newSegment0.position = convertGAtoScene(gaX: 0, gaY: 0)
-      addChild(newSegment0)
-      
       centipede.addSegments(number: 11, scene: self)
       centipede.moveHead(scene: self)
-       
-      let newSegment2 = GameScene.makeCentipedeTailSegment()
-      newSegment2.position = convertGAtoScene(gaX: 13, gaY: 20)
-      addChild(newSegment2)
-
-      let newMushroom = (GameScene.mushroom100.copy() as! SKSpriteNode)
-      newMushroom.position = convertGAtoScene(gaX: 12, gaY: 20)
-      addChild(newMushroom)
+ 
+      spawnMushrooms(number: 70)
    }
    
    override func update(_ currentTime: TimeInterval) {
