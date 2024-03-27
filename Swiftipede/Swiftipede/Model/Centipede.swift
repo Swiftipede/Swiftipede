@@ -1,5 +1,6 @@
 import SpriteKit
 
+/// \ref issue14
 class CentipedeSegment : SKNode {
    var segmentImage = GameScene.makeCentipedeBodySegment()
    
@@ -26,14 +27,18 @@ class CentipedeSegment : SKNode {
 }
 
 class Centipede {
-   var piriodBetweenMoves = TimeInterval(0.25)
+
+   /// \ref issue14
    var segements = [CentipedeSegment]()
    
+   /// \ref issue18 \ref issue15 \ref issue17
+   var piriodBetweenMoves = TimeInterval(0.25)
    var headDestinationGAX = Int32(-1)
    var headDestinationGAY = Int32(39)
    var xDirection = Int32(1)
    var yDirection = Int32(-1)
    
+   /// \ref issue14
    func addSegments(number : Int32, scene: GameScene) {
       for _ in 0..<number {
          let newSegment = CentipedeSegment()
@@ -48,6 +53,7 @@ class Centipede {
       }
    }
    
+   /// \ref issue4
    func hasCollisions(gaX: Int32, gaY: Int32, scene: GameScene) -> Bool {
       let candidatePosition = scene.convertGAtoScene(gaX: gaX, gaY: gaY)
       let collideNodes = scene.nodes(at: candidatePosition).filter { (node : SKNode) in
@@ -56,6 +62,7 @@ class Centipede {
       return 0 < collideNodes.count
    }
    
+   /// \ref issue18 \ref issue15 \ref issue17
    func moveHead(scene : GameScene) {
       if 0 < segements.count {
          for index in (1..<segements.count).reversed() {
