@@ -22,7 +22,7 @@
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <gestureRecognizers/>
                                 <connections>
-                                    <outletCollection property="gestureRecognizers" destination="dew-nI-nZo" appends="YES" id="Ai9-SE-d9L"/>
+                                    <outletCollection property="gestureRecognizers" destination="eaN-Jl-O7c" appends="YES" id="Xy9-mR-lyr"/>
                                 </connections>
                             </skView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00000" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="aLa-XG-Jbk">
@@ -45,9 +45,9 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SZV-WD-TEh" sceneMemberID="firstResponder"/>
-                <panGestureRecognizer minimumNumberOfTouches="1" id="dew-nI-nZo">
+                <panGestureRecognizer minimumNumberOfTouches="1" id="eaN-Jl-O7c">
                     <connections>
-                        <action selector="moveShooterWithRecognizer:" destination="BV1-FR-VrT" id="8uO-at-vxB"/>
+                        <action selector="moveShooterWithRecognizer:" destination="BV1-FR-VrT" id="JEu-5u-CKR"/>
                     </connections>
                 </panGestureRecognizer>
             </objects>

@@ -17,6 +17,7 @@
 		03B032EA2BA7B0FE00FB060F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 03B032E82BA7B0FE00FB060F /* Main.storyboard */; };
 		03B032EC2BA7B10000FB060F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 03B032EB2BA7B10000FB060F /* Assets.xcassets */; };
 		03B032EF2BA7B10000FB060F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 03B032ED2BA7B10000FB060F /* LaunchScreen.storyboard */; };
+		03BC3FC42BB4869000ACCC39 /* Mushroom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03BC3FC32BB4869000ACCC39 /* Mushroom.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +32,7 @@
 		03B032E92BA7B0FE00FB060F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		03B032EB2BA7B10000FB060F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		03B032EE2BA7B10000FB060F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		03BC3FC32BB4869000ACCC39 /* Mushroom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mushroom.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,6 +90,7 @@
 				033C1E062BA8A8E900A33A9E /* PrototypesScene.sks */,
 				03B032E42BA7B0FE00FB060F /* GameScene.swift */,
 				03AFE7042BADE85800B825B0 /* Centipede.swift */,
+				03BC3FC32BB4869000ACCC39 /* Mushroom.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -178,6 +181,7 @@
 				03B032E52BA7B0FE00FB060F /* GameScene.swift in Sources */,
 				03B032E72BA7B0FE00FB060F /* GameViewController.swift in Sources */,
 				03B032DF2BA7B0FE00FB060F /* AppDelegate.swift in Sources */,
+				03BC3FC42BB4869000ACCC39 /* Mushroom.swift in Sources */,
 				03AFE7052BADE85800B825B0 /* Centipede.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
