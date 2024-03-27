@@ -54,7 +54,10 @@ class GameScene: SKScene {
       return newSegement
    }
 
+   /// \ref issue14
    var centipede = Centipede()
+   
+   /// \ref issue20
    var shooter = GameScene.shooter.copy() as! SKSpriteNode
    
    /// \ref issue9
@@ -78,6 +81,7 @@ class GameScene: SKScene {
       return position.x * CGFloat(GameScene.gameAreaWidth) / frame.width
    }
    
+   /// \ref issue16
    func spawnMushrooms(number : UInt32) {
       for _ in 0..<number {
          let mushroomGAX = Int32.random(in: 0..<GameScene.gameAreaWidth)
@@ -93,6 +97,7 @@ class GameScene: SKScene {
       return position.y * CGFloat(GameScene.gameAreaHeight) / frame.height
    }
 
+   /// \ref issue14 \ref issue16 \ref issue20
    override func didMove(to view: SKView) {
       centipede.addSegments(number: 11, scene: self)
       centipede.moveHead(scene: self)
@@ -103,6 +108,7 @@ class GameScene: SKScene {
       shooter.position = CGPoint(x: frame.midX, y: 60) //<- Arbitrary start height
    }
    
+   /// \ref issue21
    func moveShooter(position: CGPoint) {
       shooter.position = position
    }
