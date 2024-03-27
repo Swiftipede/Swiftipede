@@ -15,6 +15,9 @@ class GameScene: SKScene {
    /// \ref issue5
    static let gameAreaHeight = Int32(40)
    
+   /// \ref issue29
+   static let bulletDeltaY = CGFloat(16) ///<- Arbitrary fast move
+   
    /// \ref issue9
    static let prototypeNodes = SKScene(fileNamed: "PrototypesScene.sks")!
    
@@ -32,6 +35,9 @@ class GameScene: SKScene {
 
    /// \ref issue20
    static let shooter = prototypeNodes.childNode(withName: "Shooter")!
+
+   /// \ref issue29
+   static let bullet = prototypeNodes.childNode(withName: "Bullet")!
 
    /// \ref issue9
    static func makeCentipedeBodySegment() -> SKSpriteNode {
@@ -59,6 +65,9 @@ class GameScene: SKScene {
    
    /// \ref issue20
    var shooter = GameScene.shooter.copy() as! SKSpriteNode
+   
+   /// \ref issue29
+   var bullet = GameScene.bullet.copy() as! SKSpriteNode
    
    /// \ref issue9
    func convertGAtoScene(gaX: Int32, gaY:Int32) -> CGPoint {
@@ -106,13 +115,40 @@ class GameScene: SKScene {
       
       addChild(shooter)
       shooter.position = CGPoint(x: frame.midX, y: 60) //<- Arbitrary start height
+      
+      bullet.isHidden = true
+      addChild(bullet)
    }
    
    /// \ref issue21
    func moveShooter(position: CGPoint) {
       shooter.position = position
+      if bullet.isHidden {
+         bullet.position = shooter.position
+         bullet.isHidden = false
+      }
    }
    
+   func processBulletCollision() {
+      let collideNodes = nodes(at: bullet.position).filter { (node : SKNode) in
+         node !== self && node !== shooter && node !== bullet
+      }
+      if 0 < collideNodes.count {
+         bullet.isHidden = true
+      }
+   }
+   
+   /// \ref issue29
    override func update(_ currentTime: TimeInterval) {
+      if !bullet.isHidden {
+         if bullet.position.y > frame.height {
+            bullet.isHidden = true
+         } else {
+            var currentPosition = bullet.position
+            currentPosition.y += GameScene.bulletDeltaY
+            bullet.position = currentPosition
+            processBulletCollision()
+         }
+      }
    }
 }

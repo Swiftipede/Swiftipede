@@ -16,6 +16,7 @@ class GameViewController: UIViewController {
       super.viewDidLoad()
    }
    
+   /// \ref issue21
    @IBAction func moveShooter(recognizer: UIPanGestureRecognizer) {
       let scene = gameView!.scene as! GameScene
       let viewPosition = recognizer.location(in: gameView!)
