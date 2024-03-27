@@ -88,6 +88,7 @@ class GameScene: SKScene {
    }
    
    /// \ref issue16
+   /// \ref issue2 \ref issue3 \ref issue37 \ref issue38
    func spawnMushrooms(number : UInt32) {
       for _ in 0..<number {
          let mushroomGAX = Int32.random(in: 0..<GameScene.gameAreaWidth)
@@ -127,6 +128,7 @@ class GameScene: SKScene {
       }
    }
    
+   /// \ref issue2 \ref issue3 \ref issue37 \ref issue38
    func processBulletCollision() {
       let collideNodes = nodes(at: bullet.position).filter { (node : SKNode) in
          node !== self && node !== shooter && node !== bullet

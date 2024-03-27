@@ -7,6 +7,7 @@
 
 import SpriteKit
 
+/// \ref issue2 \ref issue3 \ref issue37 \ref issue38
 extension SKNode {
    @objc func isMushroom() -> Bool {
       var result = false
@@ -23,6 +24,7 @@ extension SKNode {
    }
 }
 
+/// \ref issue2 \ref issue3 \ref issue37 \ref issue38
 class Mushroom : SKNode {
    var mushroomSprite = Mushroom.mushroomStates[0].copy() as! SKSpriteNode
    var state = 0
@@ -35,17 +37,20 @@ class Mushroom : SKNode {
       GameScene.prototypeNodes.childNode(withName: "Mushroom25")!,
    ]
    
-   func spawn() {
+   /// \ref issue2 \ref issue3 \ref issue37 \ref issue38
+  func spawn() {
       mushroomSprite.position = CGPoint(x: 0, y: 0)
       addChild(mushroomSprite)
       state = 0
    }
    
    
+   /// \ref issue2 \ref issue3 \ref issue37 \ref issue38
    override func isMushroom () -> Bool {
       return true
    }
    
+   /// \ref issue2 \ref issue3 \ref issue37 \ref issue38
    override func takeDamage() {
       mushroomSprite.removeFromParent()
       state += 1
