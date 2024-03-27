@@ -30,9 +30,6 @@ class GameScene: SKScene {
    /// \ref issue11 \ref issue12
    static let cenitpedeTail = prototypeNodes.childNode(withName: "CentipedeTail")!
 
-   /// \ref issue6
-   static let mushroom100 = prototypeNodes.childNode(withName: "Mushroom100")!
-
    /// \ref issue20
    static let shooter = prototypeNodes.childNode(withName: "Shooter")!
 
@@ -91,11 +88,13 @@ class GameScene: SKScene {
    }
    
    /// \ref issue16
+   /// \ref issue2 \ref issue3 \ref issue37 \ref issue38
    func spawnMushrooms(number : UInt32) {
       for _ in 0..<number {
          let mushroomGAX = Int32.random(in: 0..<GameScene.gameAreaWidth)
          let mushroomGAY = Int32.random(in: 6..<GameScene.gameAreaHeight) //<- Arbitrary constant 6
-         let newMushroom = (GameScene.mushroom100.copy() as! SKSpriteNode)
+         let newMushroom = Mushroom()
+         newMushroom.spawn()
          newMushroom.position = convertGAtoScene(gaX: mushroomGAX, gaY: mushroomGAY)
          addChild(newMushroom)
       }
@@ -129,12 +128,14 @@ class GameScene: SKScene {
       }
    }
    
+   /// \ref issue2 \ref issue3 \ref issue37 \ref issue38
    func processBulletCollision() {
       let collideNodes = nodes(at: bullet.position).filter { (node : SKNode) in
          node !== self && node !== shooter && node !== bullet
       }
       if 0 < collideNodes.count {
          bullet.isHidden = true
+         collideNodes[0].takeDamage()
       }
    }
    
