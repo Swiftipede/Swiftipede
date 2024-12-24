@@ -8,23 +8,6 @@
 import SpriteKit
 
 /// \ref issue2 \ref issue3 \ref issue37 \ref issue38
-extension SKNode {
-   @objc func isMushroom() -> Bool {
-      var result = false
-      if nil != parent {
-         result = parent!.isMushroom()
-      }
-      return result
-   }
-   
-   @objc func takeDamage(inScene : GameScene) {
-      if nil != parent {
-         parent!.takeDamage(inScene: inScene)
-      }
-   }
-}
-
-/// \ref issue2 \ref issue3 \ref issue37 \ref issue38
 class Mushroom : SKNode {
    var mushroomSprite = Mushroom.mushroomStates[0].copy() as! SKSpriteNode
    var state = 0

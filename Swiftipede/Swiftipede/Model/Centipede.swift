@@ -3,6 +3,7 @@ import SpriteKit
 /// \ref issue14
 class CentipedeSegment : SKNode {
    var segmentImage = GameScene.makeCentipedeBodySegment()
+   var centipede : Centipede?
    
    func becomeBody() {
       if nil != segmentImage.parent { segmentImage.removeFromParent() }
@@ -24,32 +25,78 @@ class CentipedeSegment : SKNode {
       segmentImage.position = CGPoint(x:0, y:0)
       addChild(segmentImage)
    }
+   
+   /// \ref issue31 \ref issue32
+   override func takeDamage(inScene : GameScene) {
+      segmentImage.removeFromParent()
+      if let newCentipede = centipede?.split(atSegment: self, inScene: inScene) {
+         self.removeAllActions()
+         newCentipede.moveHead(scene: inScene)
+      }
+      inScene.incrementScore(1)
+   }
 }
 
 class Centipede {
 
    /// \ref issue14
-   var segements = [CentipedeSegment]()
+   var segments = [CentipedeSegment]()
    
    /// \ref issue18 \ref issue15 \ref issue17
-   var piriodBetweenMoves = TimeInterval(0.025)
+   var periodBetweenMoves = TimeInterval(0.25)
    var headDestinationGAX = Int32(-1)
    var headDestinationGAY = Int32(39)
    var xDirection = Int32(1)
    var yDirection = Int32(-1)
    
+   /// \ref issue33 \ref issue34 \ref issue35
+   func split(atSegment: CentipedeSegment, inScene : GameScene) -> Centipede? {
+      var newCentipede : Centipede? = nil
+      if let splitIndex = segments.firstIndex(of: atSegment) {
+         let orphanSegments = segments[(splitIndex+1)...]
+         let remainingSegments = segments[..<splitIndex]
+         if 0 < orphanSegments.count {
+            newCentipede = Centipede()
+            newCentipede!.addSegments(arraySlice: orphanSegments)
+            newCentipede!.headDestinationGAX = inScene.convertSceneXtoGAX(position: atSegment.position)
+            newCentipede!.headDestinationGAY = inScene.convertSceneYtoGAY(position: atSegment.position) + yDirection
+            newCentipede!.xDirection = -xDirection
+            newCentipede!.yDirection = yDirection
+         }
+         if 0 < remainingSegments.count {
+            segments.removeAll()
+            segments.append(contentsOf: remainingSegments)
+            if 1 < segments.count { segments[segments.count - 1].becomeTail() }
+        }
+      }
+      return newCentipede
+   }
+   
+   func addSegments(arraySlice: ArraySlice<CentipedeSegment>) {
+      segments.append(contentsOf: arraySlice)
+      if 0 < segments.count {
+         segments[0].becomeHead()
+         if 1 < segments.count { segments[segments.count - 1].becomeTail() }
+      }
+      for segment in segments {
+         segment.removeAllActions()
+         segment.centipede = self
+      }
+   }
+   
    /// \ref issue14
-   func addSegments(number : Int32, scene: GameScene) {
+   func addSegments(number : UInt32, scene: GameScene) {
       for _ in 0..<number {
          let newSegment = CentipedeSegment()
+         newSegment.centipede = self
          newSegment.becomeBody()
-         segements.append(newSegment)
+         segments.append(newSegment)
          scene.addChild(newSegment)
          newSegment.position = scene.convertGAtoScene(gaX: headDestinationGAX, gaY: headDestinationGAY)
       }
-      if 0 < segements.count {
-         segements[0].becomeHead()
-         if 1 < segements.count { segements[segements.count - 1].becomeTail() }
+      if 0 < segments.count {
+         segments[0].becomeHead()
+         if 1 < segments.count { segments[segments.count - 1].becomeTail() }
       }
    }
    
@@ -64,16 +111,16 @@ class Centipede {
    
    /// \ref issue18 \ref issue15 \ref issue17 \ref issue19
    func moveHead(scene : GameScene) {
-      if 0 < segements.count {
-         for index in (1..<segements.count).reversed() {
-            let currentSegment = segements[index]
-            let predecesorSegment = segements[index - 1]
+      if 0 < segments.count {
+         for index in (1..<segments.count).reversed() {
+            let currentSegment = segments[index]
+            let predecesorSegment = segments[index - 1]
             let destination = predecesorSegment.position
             currentSegment.xScale = (destination.x > currentSegment.position.x) ? 1 : -1
-            currentSegment.run(SKAction.move(to: destination, duration: piriodBetweenMoves))
+            currentSegment.run(SKAction.move(to: destination, duration: periodBetweenMoves))
          }
          
-         let head = segements[0]
+         let head = segments[0]
          headDestinationGAX += xDirection
          if headDestinationGAX >= GameScene.gameAreaWidth || headDestinationGAX < 0 || 
                hasCollisions(gaX: headDestinationGAX, gaY: headDestinationGAY, scene: scene) {
@@ -91,7 +138,7 @@ class Centipede {
             headDestinationGAX += xDirection
          }
          let destination = scene.convertGAtoScene(gaX: headDestinationGAX, gaY: headDestinationGAY)
-         head.run(SKAction.move(to: destination, duration: piriodBetweenMoves)) {
+         head.run(SKAction.move(to: destination, duration: periodBetweenMoves)) {
             self.moveHead(scene: scene)
          }
       }

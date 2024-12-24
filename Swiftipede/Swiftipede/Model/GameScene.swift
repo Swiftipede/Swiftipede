@@ -8,6 +8,23 @@
 import SpriteKit
 import GameplayKit
 
+/// \ref issue2 \ref issue3 \ref issue37 \ref issue38
+extension SKNode {
+   @objc func isMushroom() -> Bool {
+      var result = false
+      if nil != parent {
+         result = parent!.isMushroom()
+      }
+      return result
+   }
+   
+   @objc func takeDamage(inScene : GameScene) {
+      if nil != parent {
+         parent!.takeDamage(inScene: inScene)
+      }
+   }
+}
+
 class GameScene: SKScene, Observable {
    /// \ref issue5
    static let gameAreaWidth = Int32(25)
@@ -21,6 +38,9 @@ class GameScene: SKScene, Observable {
    /// \ref issue29
    static let bulletDeltaY = CGFloat(16) ///<- Arbitrary fast move
    
+   static let defaultCentipedeSegementsNumber = UInt32(11)
+   static let defaultMushroomsNumber = UInt32(70)
+
    /// \ref issue9
    static let prototypeNodes = SKScene(fileNamed: "PrototypesScene.sks")!
    
@@ -63,9 +83,6 @@ class GameScene: SKScene, Observable {
    /// \ref issue3 \ref issue25
    @objc dynamic var score = Int(0)
    
-   /// \ref issue14
-   var centipede = Centipede()
-   
    /// \ref issue20
    var shooter = GameScene.shooter.copy() as! SKSpriteNode
    
@@ -80,7 +97,6 @@ class GameScene: SKScene, Observable {
    /// \ref issue5 : Convert from game coordinates to scene coordinates
    func convertGAXToSceneX(gaX : Int32) -> CGFloat {
       return (0.5 + CGFloat(gaX)) * frame.width / CGFloat(GameScene.gameAreaWidth)
-      
    }
    
    /// \ref issue5 : Convert from game coordinates to scene coordinates
@@ -89,10 +105,15 @@ class GameScene: SKScene, Observable {
    }
    
    /// \ref issue5 : Convert from game coordinates to scene coordinates
-   func convertSceneXtoGAX(position: CGPoint) -> CGFloat {
-      return position.x * CGFloat(GameScene.gameAreaWidth) / frame.width
+   func convertSceneXtoGAX(position: CGPoint) -> Int32 {
+      return Int32(position.x * CGFloat(GameScene.gameAreaWidth) / frame.width)
    }
    
+   /// \ref issue5 : Convert from game coordinates to scene coordinates
+   func convertSceneYtoGAY(position: CGPoint) -> Int32 {
+      return Int32(position.y * CGFloat(GameScene.gameAreaHeight) / frame.height)
+   }
+
    /// \ref issue16
    /// \ref issue2 \ref issue3 \ref issue37 \ref issue38
    func spawnMushrooms(number : UInt32) {
@@ -105,24 +126,29 @@ class GameScene: SKScene, Observable {
          addChild(newMushroom)
       }
    }
+ 
+   func spawnNewCentipede() {
+      let centipede = Centipede()
+      centipede.addSegments(number: GameScene.defaultCentipedeSegementsNumber, scene: self)
+      centipede.moveHead(scene: self)
+   }
    
-   /// \ref issue5 : Convert from game coordinates to scene coordinates
-   func convertSceneYtoGAY(position: CGPoint) -> CGFloat {
-      return position.y * CGFloat(GameScene.gameAreaHeight) / frame.height
+   func spawnShooter() {
+      addChild(shooter)
+      shooter.position = CGPoint(x: frame.midX, y: 60) //<- Arbitrary start height
+   }
+   
+   func spawnBullet() {
+      bullet.isHidden = true
+      addChild(bullet)
    }
 
    /// \ref issue14 \ref issue16 \ref issue20
    override func didMove(to view: SKView) {
-      centipede.addSegments(number: 11, scene: self)
-      centipede.moveHead(scene: self)
- 
-      spawnMushrooms(number: 70)
-      
-      addChild(shooter)
-      shooter.position = CGPoint(x: frame.midX, y: 60) //<- Arbitrary start height
-      
-      bullet.isHidden = true
-      addChild(bullet)
+      spawnNewCentipede()
+      spawnMushrooms(number: GameScene.defaultMushroomsNumber)
+      spawnShooter()
+      spawnBullet()
    }
    
    /// \ref issue21
