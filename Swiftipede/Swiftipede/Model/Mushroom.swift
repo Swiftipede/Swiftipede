@@ -50,7 +50,7 @@ class Mushroom : SKNode {
       return true
    }
    
-   /// \ref issue2 \ref issue3 \ref issue37 \ref issue38
+   /// \ref issue2 \ref issue3 \ref issue37 \ref issue38 \ref issue36
    override func takeDamage(inScene : GameScene) {
       mushroomSprite.removeFromParent()
       state += 1

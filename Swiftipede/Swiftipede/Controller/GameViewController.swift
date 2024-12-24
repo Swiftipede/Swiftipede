@@ -12,7 +12,7 @@ import GameplayKit
 class GameViewController: UIViewController {
    @IBOutlet var gameView : SKView?
    
-   /// \ref issue3
+   /// \ref issue3 \ref issue25
    @IBOutlet var scoreLabel : UILabel?
    
    /// \ref issue3
@@ -27,7 +27,7 @@ class GameViewController: UIViewController {
       
       gameScene = gameView!.scene as? GameScene
       
-      /// \ref issue3
+      /// \ref issue3 \ref issue25
       scoreObservation = observe(
           \.gameScene!.score,
           options: [.new]
