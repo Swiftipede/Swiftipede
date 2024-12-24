@@ -8,7 +8,7 @@
 import SpriteKit
 import GameplayKit
 
-class GameScene: SKScene {
+class GameScene: SKScene, Observable {
    /// \ref issue5
    static let gameAreaWidth = Int32(25)
    
@@ -60,6 +60,9 @@ class GameScene: SKScene {
       return newSegement
    }
 
+   /// \ref issue3
+   @objc dynamic var score = Int(0)
+   
    /// \ref issue14
    var centipede = Centipede()
    
@@ -131,6 +134,11 @@ class GameScene: SKScene {
       }
    }
    
+   /// \ref issue3
+   func incrementScore(_ amount: Int) {
+      score += amount
+   }
+   
    /// \ref issue2 \ref issue3 \ref issue37 \ref issue38
    func processBulletCollision() {
       let collideNodes = nodes(at: bullet.position).filter { (node : SKNode) in
@@ -138,7 +146,7 @@ class GameScene: SKScene {
       }
       if 0 < collideNodes.count {
          bullet.isHidden = true
-         collideNodes[0].takeDamage()
+         collideNodes[0].takeDamage(inScene: self)
       }
    }
    

@@ -42,6 +42,7 @@
                     </view>
                     <connections>
                         <outlet property="gameView" destination="5Ev-Tz-ex6" id="0LE-OL-qM7"/>
+                        <outlet property="scoreLabel" destination="aLa-XG-Jbk" id="TR0-tn-wLY"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SZV-WD-TEh" sceneMemberID="firstResponder"/>

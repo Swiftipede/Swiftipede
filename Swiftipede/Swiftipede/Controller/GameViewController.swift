@@ -12,16 +12,35 @@ import GameplayKit
 class GameViewController: UIViewController {
    @IBOutlet var gameView : SKView?
    
+   /// \ref issue3
+   @IBOutlet var scoreLabel : UILabel?
+   
+   /// \ref issue3
+   @objc var gameScene : GameScene?
+
+   /// \ref issue3
+   var scoreObservation: NSKeyValueObservation?
+
+   /// \ref issue3
    override func viewDidLoad() {
       super.viewDidLoad()
-   }
+      
+      gameScene = gameView!.scene as? GameScene
+      
+      /// \ref issue3
+      scoreObservation = observe(
+          \.gameScene!.score,
+          options: [.new]
+      ) { object, change in
+         self.scoreLabel!.text = "\(change.newValue!)"
+      }
+  }
    
    /// \ref issue21
    @IBAction func moveShooter(recognizer: UIPanGestureRecognizer) {
-      let scene = gameView!.scene as! GameScene
       let viewPosition = recognizer.location(in: gameView!)
-      let scenePosition = scene.convertPoint(fromView: viewPosition)
-      scene.moveShooter(position: scenePosition)
+      let scenePosition = gameScene!.convertPoint(fromView: viewPosition)
+      gameScene!.moveShooter(position: scenePosition)
    }
    
    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
