@@ -34,13 +34,16 @@ class GameScene: SKScene, Observable {
    
    /// \ref issue19
    static let playAreaStartGAY = Int32(10)
-
+   
    /// \ref issue29
    static let bulletDeltaY = CGFloat(16) ///<- Arbitrary fast move
    
+   /// \ref issue14
    static let defaultCentipedeSegementsNumber = UInt32(11)
+   
+   /// \ref issue16
    static let defaultMushroomsNumber = UInt32(70)
-
+   
    /// \ref issue9
    static let prototypeNodes = SKScene(fileNamed: "PrototypesScene.sks")!
    
@@ -52,12 +55,18 @@ class GameScene: SKScene, Observable {
    
    /// \ref issue11 \ref issue12
    static let cenitpedeTail = prototypeNodes.childNode(withName: "CentipedeTail")!
-
+   
    /// \ref issue20
    static let shooter = prototypeNodes.childNode(withName: "Shooter")!
-
+   
    /// \ref issue29
    static let bullet = prototypeNodes.childNode(withName: "Bullet")!
+   
+   /// \ref issue55
+   static let delayBetweenMushroomHeal = TimeInterval(0.1)
+   
+   /// \ref issue55
+   static let healAudioAction = SKAction.playSoundFileNamed("Glass.aiff", waitForCompletion: false)
 
    /// \ref issue9
    static func makeCentipedeBodySegment() -> SKSpriteNode {
@@ -65,7 +74,7 @@ class GameScene: SKScene, Observable {
       newSegement.isPaused = false
       return newSegement
    }
-
+   
    /// \ref issue9
    static func makeCentipedeHeadSegment() -> SKSpriteNode {
       let newSegement = GameScene.cenitpedeHead.copy() as! SKSpriteNode
@@ -79,9 +88,12 @@ class GameScene: SKScene, Observable {
       newSegement.isPaused = false
       return newSegement
    }
-
+   
    /// \ref issue3 \ref issue25
    @objc dynamic var score = Int(0)
+   
+   /// \ref issue54 Keep track of centipedes (and therfore segements) remaining
+   var centipedes = Set<Centipede>()
    
    /// \ref issue20
    var shooter = GameScene.shooter.copy() as! SKSpriteNode
@@ -113,7 +125,7 @@ class GameScene: SKScene, Observable {
    func convertSceneYtoGAY(position: CGPoint) -> Int32 {
       return Int32(position.y * CGFloat(GameScene.gameAreaHeight) / frame.height)
    }
-
+   
    /// \ref issue16
    /// \ref issue2 \ref issue3 \ref issue37 \ref issue38
    func spawnMushrooms(number : UInt32) {
@@ -126,23 +138,70 @@ class GameScene: SKScene, Observable {
          addChild(newMushroom)
       }
    }
- 
+   
+   /// \ref issue54 \ref issue56 \ref issue57
+   func healMushrooms(inSequence : ArraySlice<SKNode>) {
+      if 0 < inSequence.count {
+         let mushroom = inSequence.last as! Mushroom
+         mushroom.run(SKAction.sequence([SKAction.wait(forDuration: 0.1), SKAction.run {
+            mushroom.heal()
+            self.incrementScore(1) // \ref issue56
+            mushroom.run(GameScene.healAudioAction)
+            if 1 < inSequence.count {
+               self.healMushrooms(inSequence: inSequence[..<(inSequence.count - 1)])
+            } else {
+               self.spawnNewCentipede() // \ref issue57
+            }
+         }]))
+      }
+   }
+   
+   /// \ref issue54
+   func healDamagedMushrooms() {
+      let mushroomChildren : [SKNode] = children.filter({ (node : SKNode) in
+         return node.isMushroom() && (0 != (node as! Mushroom).state)
+      })
+      healMushrooms(inSequence: mushroomChildren[...])
+   }
+   
+   /// \ref issue54
+   func processEndOfLevel() {
+      healDamagedMushrooms()
+   }
+   
+   /// \ref issue54
+   func registerCentipede(_ centipede: Centipede) {
+      centipedes.insert(centipede)
+   }
+   
+   /// \ref issue54
+   func unregisterCentipede(_ centipede: Centipede) {
+      centipedes.remove(centipede)
+      if 0 == centipedes.count {
+         processEndOfLevel()
+      }
+   }
+   
+   /// \ref issue57
    func spawnNewCentipede() {
       let centipede = Centipede()
       centipede.addSegments(number: GameScene.defaultCentipedeSegementsNumber, scene: self)
       centipede.moveHead(scene: self)
+      registerCentipede(centipede)
    }
    
+   /// \ref issue20
    func spawnShooter() {
       addChild(shooter)
       shooter.position = CGPoint(x: frame.midX, y: 60) //<- Arbitrary start height
    }
    
+   /// \ref issue29
    func spawnBullet() {
       bullet.isHidden = true
       addChild(bullet)
    }
-
+   
    /// \ref issue14 \ref issue16 \ref issue20
    override func didMove(to view: SKView) {
       spawnNewCentipede()

@@ -21,13 +21,21 @@ class Mushroom : SKNode {
    ]
    
    /// \ref issue2 \ref issue3 \ref issue37 \ref issue38
-  func spawn() {
+   func spawn() {
       mushroomSprite.position = CGPoint(x: 0, y: 0)
       addChild(mushroomSprite)
       state = 0
    }
    
-   
+   func heal() {
+      mushroomSprite.removeFromParent()
+      state = 0
+      if state < Mushroom.mushroomStates.count {
+         mushroomSprite = Mushroom.mushroomStates[state].copy() as! SKSpriteNode
+         mushroomSprite.position = CGPoint(x: 0, y: 0)
+         addChild(mushroomSprite)
+      }
+   }
    /// \ref issue2 \ref issue3 \ref issue37 \ref issue38
    override func isMushroom () -> Bool {
       return true

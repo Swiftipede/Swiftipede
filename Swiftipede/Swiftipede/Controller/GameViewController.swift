@@ -27,7 +27,7 @@ class GameViewController: UIViewController {
       
       gameScene = gameView!.scene as? GameScene
       
-      /// \ref issue3 \ref issue25
+      /// \ref issue3 \ref issue25 \ref issue40
       scoreObservation = observe(
           \.gameScene!.score,
           options: [.new]
