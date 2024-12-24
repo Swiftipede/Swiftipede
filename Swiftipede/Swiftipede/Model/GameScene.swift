@@ -65,6 +65,9 @@ class GameScene: SKScene, Observable {
    /// \ref issue55
    static let delayBetweenMushroomHeal = TimeInterval(0.1)
    
+   /// \ref issue49
+   static let shootAudioAction = SKAction.playSoundFileNamed("Pew.mp3", waitForCompletion: false)
+   
    /// \ref issue55
    static let healAudioAction = SKAction.playSoundFileNamed("Glass.aiff", waitForCompletion: false)
 
@@ -142,6 +145,7 @@ class GameScene: SKScene, Observable {
    /// \ref issue54 \ref issue56 \ref issue57
    func healMushrooms(inSequence : ArraySlice<SKNode>) {
       if 0 < inSequence.count {
+         shooter.isHidden = true
          let mushroom = inSequence.last as! Mushroom
          mushroom.run(SKAction.sequence([SKAction.wait(forDuration: 0.1), SKAction.run {
             mushroom.heal()
@@ -151,6 +155,7 @@ class GameScene: SKScene, Observable {
                self.healMushrooms(inSequence: inSequence[..<(inSequence.count - 1)])
             } else {
                self.spawnNewCentipede() // \ref issue57
+               self.shooter.isHidden = false
             }
          }]))
       }
@@ -194,6 +199,7 @@ class GameScene: SKScene, Observable {
    func spawnShooter() {
       addChild(shooter)
       shooter.position = CGPoint(x: frame.midX, y: 60) //<- Arbitrary start height
+      shooter.isHidden = false
    }
    
    /// \ref issue29
@@ -212,10 +218,13 @@ class GameScene: SKScene, Observable {
    
    /// \ref issue21
    func moveShooter(position: CGPoint) {
-      shooter.position = position
-      if bullet.isHidden {
-         bullet.position = shooter.position
-         bullet.isHidden = false
+      if shooter.isHidden == false {
+         shooter.position = position
+         if bullet.isHidden {
+            bullet.position = shooter.position
+            bullet.isHidden = false
+            bullet.run(GameScene.shootAudioAction)
+         }
       }
    }
    
