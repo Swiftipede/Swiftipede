@@ -17,9 +17,9 @@ extension SKNode {
       return result
    }
    
-   @objc func takeDamage() {
+   @objc func takeDamage(inScene : GameScene) {
       if nil != parent {
-         parent!.takeDamage()
+         parent!.takeDamage(inScene: inScene)
       }
    }
 }
@@ -51,13 +51,15 @@ class Mushroom : SKNode {
    }
    
    /// \ref issue2 \ref issue3 \ref issue37 \ref issue38
-   override func takeDamage() {
+   override func takeDamage(inScene : GameScene) {
       mushroomSprite.removeFromParent()
       state += 1
       if state < Mushroom.mushroomStates.count {
          mushroomSprite = Mushroom.mushroomStates[state].copy() as! SKSpriteNode
          mushroomSprite.position = CGPoint(x: 0, y: 0)
          addChild(mushroomSprite)
+      } else {
+         inScene.incrementScore(1)
       }
    }
 }
