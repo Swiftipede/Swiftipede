@@ -60,7 +60,7 @@ class GameScene: SKScene, Observable {
       return newSegement
    }
 
-   /// \ref issue3
+   /// \ref issue3 \ref issue25
    @objc dynamic var score = Int(0)
    
    /// \ref issue14

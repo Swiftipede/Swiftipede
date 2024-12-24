@@ -53,7 +53,7 @@ class Centipede {
       }
    }
    
-   /// \ref issue4
+   /// \ref issue4 \ref issue24 \ref issue30
    func hasCollisions(gaX: Int32, gaY: Int32, scene: GameScene) -> Bool {
       let candidatePosition = scene.convertGAtoScene(gaX: gaX, gaY: gaY)
       let collideNodes = scene.nodes(at: candidatePosition).filter { (node : SKNode) in
