@@ -15,6 +15,9 @@ class GameScene: SKScene {
    /// \ref issue5
    static let gameAreaHeight = Int32(40)
    
+   /// \ref issue19
+   static let playAreaStartGAY = Int32(10)
+
    /// \ref issue29
    static let bulletDeltaY = CGFloat(16) ///<- Arbitrary fast move
    

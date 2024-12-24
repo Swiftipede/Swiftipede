@@ -32,7 +32,7 @@ class Centipede {
    var segements = [CentipedeSegment]()
    
    /// \ref issue18 \ref issue15 \ref issue17
-   var piriodBetweenMoves = TimeInterval(0.25)
+   var piriodBetweenMoves = TimeInterval(0.025)
    var headDestinationGAX = Int32(-1)
    var headDestinationGAY = Int32(39)
    var xDirection = Int32(1)
@@ -62,7 +62,7 @@ class Centipede {
       return 0 < collideNodes.count
    }
    
-   /// \ref issue18 \ref issue15 \ref issue17
+   /// \ref issue18 \ref issue15 \ref issue17 \ref issue19
    func moveHead(scene : GameScene) {
       if 0 < segements.count {
          for index in (1..<segements.count).reversed() {
@@ -81,6 +81,10 @@ class Centipede {
             if headDestinationGAY >= GameScene.gameAreaHeight || headDestinationGAY < 0 {
                yDirection *= -1
                headDestinationGAY += yDirection * 2
+            }
+            if 0 < yDirection && headDestinationGAY > GameScene.playAreaStartGAY {
+               /// \ref issue19
+               yDirection *= -1
             }
             xDirection *= -1;
             head.xScale = CGFloat(xDirection)
