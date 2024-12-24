@@ -18,6 +18,9 @@
 		03B032EC2BA7B10000FB060F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 03B032EB2BA7B10000FB060F /* Assets.xcassets */; };
 		03B032EF2BA7B10000FB060F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 03B032ED2BA7B10000FB060F /* LaunchScreen.storyboard */; };
 		03BC3FC42BB4869000ACCC39 /* Mushroom.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03BC3FC32BB4869000ACCC39 /* Mushroom.swift */; };
+		03ED60132D1B61530082E4A8 /* Glass.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 03ED60102D1B61520082E4A8 /* Glass.aiff */; };
+		03ED60142D1B61530082E4A8 /* Pew.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 03ED60112D1B61520082E4A8 /* Pew.mp3 */; };
+		03ED60152D1B61530082E4A8 /* Pop.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 03ED60122D1B61530082E4A8 /* Pop.aiff */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,6 +36,9 @@
 		03B032EB2BA7B10000FB060F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		03B032EE2BA7B10000FB060F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		03BC3FC32BB4869000ACCC39 /* Mushroom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mushroom.swift; sourceTree = "<group>"; };
+		03ED60102D1B61520082E4A8 /* Glass.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; path = Glass.aiff; sourceTree = "<group>"; };
+		03ED60112D1B61520082E4A8 /* Pew.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Pew.mp3; sourceTree = "<group>"; };
+		03ED60122D1B61530082E4A8 /* Pop.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; path = Pop.aiff; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -91,6 +97,9 @@
 				03B032E42BA7B0FE00FB060F /* GameScene.swift */,
 				03AFE7042BADE85800B825B0 /* Centipede.swift */,
 				03BC3FC32BB4869000ACCC39 /* Mushroom.swift */,
+				03ED60102D1B61520082E4A8 /* Glass.aiff */,
+				03ED60112D1B61520082E4A8 /* Pew.mp3 */,
+				03ED60122D1B61530082E4A8 /* Pop.aiff */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -162,10 +171,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				03ED60132D1B61530082E4A8 /* Glass.aiff in Resources */,
+				03ED60142D1B61530082E4A8 /* Pew.mp3 in Resources */,
 				03B032EA2BA7B0FE00FB060F /* Main.storyboard in Resources */,
 				03B032E12BA7B0FE00FB060F /* GameScene.sks in Resources */,
 				033C1E052BA8A88200A33A9E /* images.atlas in Resources */,
 				03B032EC2BA7B10000FB060F /* Assets.xcassets in Resources */,
+				03ED60152D1B61530082E4A8 /* Pop.aiff in Resources */,
 				03B032EF2BA7B10000FB060F /* LaunchScreen.storyboard in Resources */,
 				033C1E072BA8A8E900A33A9E /* PrototypesScene.sks in Resources */,
 			);

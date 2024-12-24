@@ -37,7 +37,14 @@ class CentipedeSegment : SKNode {
    }
 }
 
-class Centipede {
+class Centipede : Hashable {
+   static func == (lhs: Centipede, rhs: Centipede) -> Bool {
+      return ObjectIdentifier(lhs) == ObjectIdentifier(rhs)
+   }
+   
+   func hash(into hasher: inout Hasher) {
+      hasher.combine(ObjectIdentifier(self))
+   }
 
    /// \ref issue14
    var segments = [CentipedeSegment]()
@@ -61,13 +68,18 @@ class Centipede {
             newCentipede!.headDestinationGAX = inScene.convertSceneXtoGAX(position: atSegment.position)
             newCentipede!.headDestinationGAY = inScene.convertSceneYtoGAY(position: atSegment.position) + yDirection
             newCentipede!.xDirection = -xDirection
+            newCentipede!.segments[0].xScale = CGFloat(xDirection)
+
             newCentipede!.yDirection = yDirection
+            inScene.registerCentipede(newCentipede!)
          }
          if 0 < remainingSegments.count {
             segments.removeAll()
             segments.append(contentsOf: remainingSegments)
             if 1 < segments.count { segments[segments.count - 1].becomeTail() }
-        }
+         } else {
+            inScene.unregisterCentipede(self)
+         }
       }
       return newCentipede
    }
