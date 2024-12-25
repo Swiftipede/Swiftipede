@@ -215,7 +215,8 @@ class GameScene: SKScene, Observable {
    /// \ref issue21
    func moveShooter(position: CGPoint) {
       if shooter.isHidden == false {
-         shooter.position = position
+         let maxY = min(position.y, convertGAYToSceneY(gaY: GameScene.playAreaStartGAY))
+         shooter.position = CGPoint(x: position.x, y: maxY)
          if bullet.isHidden {
             bullet.position = shooter.position
             bullet.isHidden = false
