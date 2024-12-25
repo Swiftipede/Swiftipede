@@ -17,7 +17,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <skView contentMode="scaleAspectFit" sceneName="GameScene.sks" id="5Ev-Tz-ex6">
-                                <rect key="frame" x="0.0" y="59" width="393" height="759"/>
+                                <rect key="frame" x="0.0" y="63" width="393" height="755"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <gestureRecognizers/>
@@ -25,16 +25,42 @@
                                     <outletCollection property="gestureRecognizers" destination="eaN-Jl-O7c" appends="YES" id="Xy9-mR-lyr"/>
                                 </connections>
                             </skView>
+                            <imageView opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="lifeIcon.png" id="LX3-3b-IrL">
+                                <rect key="frame" x="16" y="26" width="29" height="29"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="17" scale="default"/>
+                            </imageView>
+                            <imageView opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="lifeIcon.png" id="3uO-Em-YrS">
+                                <rect key="frame" x="40" y="26" width="29" height="29"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="17" scale="default"/>
+                            </imageView>
+                            <imageView opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="lifeIcon.png" id="FVk-rX-VF0">
+                                <rect key="frame" x="64" y="26" width="29" height="29"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="17" scale="default"/>
+                            </imageView>
+                            <imageView opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="lifeIcon.png" id="6W4-a2-tch">
+                                <rect key="frame" x="88" y="26" width="29" height="29"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="17" scale="default"/>
+                            </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00000" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="aLa-XG-Jbk">
-                                <rect key="frame" x="268" y="30" width="109" height="21"/>
+                                <rect key="frame" x="268" y="26" width="109" height="29"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="22"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="square.and.arrow.up.circle.fill" catalog="system" id="LX3-3b-IrL">
-                                <rect key="frame" x="16" y="26" width="29" height="29"/>
+                            <imageView opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="lifeIcon.png" id="dXV-4W-n9H">
+                                <rect key="frame" x="113" y="26" width="29" height="29"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="17" scale="default"/>
                             </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="4qk-I5-YsI"/>
@@ -42,6 +68,11 @@
                     </view>
                     <connections>
                         <outlet property="gameView" destination="5Ev-Tz-ex6" id="0LE-OL-qM7"/>
+                        <outlet property="remainingLifeIndicator0" destination="LX3-3b-IrL" id="j27-T6-Eff"/>
+                        <outlet property="remainingLifeIndicator1" destination="3uO-Em-YrS" id="07q-Se-Kxt"/>
+                        <outlet property="remainingLifeIndicator2" destination="FVk-rX-VF0" id="Tmo-YI-9Xo"/>
+                        <outlet property="remainingLifeIndicator3" destination="6W4-a2-tch" id="66G-cu-2R6"/>
+                        <outlet property="remainingLifeIndicator4" destination="dXV-4W-n9H" id="mw9-jc-Ib8"/>
                         <outlet property="scoreLabel" destination="aLa-XG-Jbk" id="TR0-tn-wLY"/>
                     </connections>
                 </viewController>
@@ -56,7 +87,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="square.and.arrow.up.circle.fill" catalog="system" width="128" height="123"/>
+        <image name="lifeIcon.png" width="52" height="60"/>
         <systemColor name="systemGray2Color">
             <color red="0.68235294120000001" green="0.68235294120000001" blue="0.69803921570000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
