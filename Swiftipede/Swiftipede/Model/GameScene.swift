@@ -70,10 +70,10 @@ class GameScene: SKScene, Observable {
    
    /// \ref issue50
    static let hitAudioAction = SKAction.playSoundFileNamed("Pop.aiff", waitForCompletion: false)
-
+   
    /// \ref issue55
    static let healAudioAction = SKAction.playSoundFileNamed("Glass.aiff", waitForCompletion: false)
-
+   
    /// \ref issue9
    static func makeCentipedeBodySegment() -> SKSpriteNode {
       let newSegement = GameScene.cenitpedeBody.copy() as! SKSpriteNode
@@ -212,11 +212,21 @@ class GameScene: SKScene, Observable {
       addChild(bullet)
    }
    
-   /// \ref issue21
+   func killShooter() {
+      
+   }
+   
+   /// \ref issue21 \ref issue23
    func moveShooter(position: CGPoint) {
       if shooter.isHidden == false {
          let maxY = min(position.y, convertGAYToSceneY(gaY: GameScene.playAreaStartGAY))
-         shooter.position = CGPoint(x: position.x, y: maxY)
+         let collideNodes = nodes(at: position).filter { (node : SKNode) in
+            node !== self && node !== shooter && node !== bullet
+         }
+         if 0 == collideNodes.count {
+            shooter.position = CGPoint(x: position.x, y: maxY)
+         } else {
+         }
          if bullet.isHidden {
             bullet.position = shooter.position
             bullet.isHidden = false
@@ -228,6 +238,20 @@ class GameScene: SKScene, Observable {
    /// \ref issue3
    func incrementScore(_ amount: Int) {
       score += amount
+   }
+   
+   /// \ref issue23
+   func processShooterCollisions() {
+      let dangerousCollisions = nodes(at: shooter.position).filter { (node: SKNode) in
+         node !== self && node !== shooter && node !== bullet &&
+         !node.isMushroom()
+      }
+      if 0 != dangerousCollisions.count {
+         killShooter()
+         for node in dangerousCollisions {
+            node.takeDamage(inScene: self)
+         }
+      }
    }
    
    /// \ref issue2 \ref issue3 \ref issue37 \ref issue38
@@ -248,7 +272,7 @@ class GameScene: SKScene, Observable {
       spawnShooter()
       spawnBullet()
    }
-
+   
    /// \ref issue29
    override func update(_ currentTime: TimeInterval) {
       if !bullet.isHidden {
@@ -260,6 +284,9 @@ class GameScene: SKScene, Observable {
             bullet.position = currentPosition
             processBulletCollision()
          }
+      }
+      if !shooter.isHidden {
+         processShooterCollisions()
       }
    }
 }

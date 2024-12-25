@@ -118,7 +118,7 @@ class Centipede : Hashable {
    func hasCollisions(gaX: Int32, gaY: Int32, scene: GameScene) -> Bool {
       let candidatePosition = scene.convertGAtoScene(gaX: gaX, gaY: gaY)
       let collideNodes = scene.nodes(at: candidatePosition).filter { (node : SKNode) in
-         node !== scene
+         node !== scene && node !== scene.shooter
       }
       return 0 < collideNodes.count
    }
