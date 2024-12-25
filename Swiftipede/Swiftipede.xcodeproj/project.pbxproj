@@ -10,6 +10,8 @@
 		033C1E052BA8A88200A33A9E /* images.atlas in Resources */ = {isa = PBXBuildFile; fileRef = 033C1E042BA8A88200A33A9E /* images.atlas */; };
 		033C1E072BA8A8E900A33A9E /* PrototypesScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 033C1E062BA8A8E900A33A9E /* PrototypesScene.sks */; };
 		038558332D1B9D03004EF0D6 /* lifeIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 038558322D1B9D03004EF0D6 /* lifeIcon.png */; };
+		03AD8CCB2D1BB6B8003BA617 /* Blow.aiff in Resources */ = {isa = PBXBuildFile; fileRef = 03AD8CCA2D1BB6B8003BA617 /* Blow.aiff */; };
+		03AD8CCD2D1BB821003BA617 /* crash-7075.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 03AD8CCC2D1BB821003BA617 /* crash-7075.mp3 */; };
 		03AFE7052BADE85800B825B0 /* Centipede.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03AFE7042BADE85800B825B0 /* Centipede.swift */; };
 		03B032DF2BA7B0FE00FB060F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03B032DE2BA7B0FE00FB060F /* AppDelegate.swift */; };
 		03B032E12BA7B0FE00FB060F /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 03B032E02BA7B0FE00FB060F /* GameScene.sks */; };
@@ -30,6 +32,8 @@
 		033C1E042BA8A88200A33A9E /* images.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = images.atlas; sourceTree = "<group>"; };
 		033C1E062BA8A8E900A33A9E /* PrototypesScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = PrototypesScene.sks; sourceTree = "<group>"; };
 		038558322D1B9D03004EF0D6 /* lifeIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = lifeIcon.png; sourceTree = "<group>"; };
+		03AD8CCA2D1BB6B8003BA617 /* Blow.aiff */ = {isa = PBXFileReference; lastKnownFileType = audio.aiff; path = Blow.aiff; sourceTree = "<group>"; };
+		03AD8CCC2D1BB821003BA617 /* crash-7075.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "crash-7075.mp3"; sourceTree = "<group>"; };
 		03AFE7042BADE85800B825B0 /* Centipede.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Centipede.swift; sourceTree = "<group>"; };
 		03B032DB2BA7B0FE00FB060F /* Swiftipede.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Swiftipede.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		03B032DE2BA7B0FE00FB060F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -98,6 +102,7 @@
 		03B032F62BA7B12A00FB060F /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				03AD8CCA2D1BB6B8003BA617 /* Blow.aiff */,
 				03B032E02BA7B0FE00FB060F /* GameScene.sks */,
 				033C1E062BA8A8E900A33A9E /* PrototypesScene.sks */,
 				03B032E42BA7B0FE00FB060F /* GameScene.swift */,
@@ -108,6 +113,7 @@
 				03ED60192D1B85530082E4A8 /* PewA.wav */,
 				03ED601B2D1B855C0082E4A8 /* PewB.wav */,
 				03ED601D2D1B870A0082E4A8 /* Pew.mp3 */,
+				03AD8CCC2D1BB821003BA617 /* crash-7075.mp3 */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -181,11 +187,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				038558332D1B9D03004EF0D6 /* lifeIcon.png in Resources */,
+				03AD8CCB2D1BB6B8003BA617 /* Blow.aiff in Resources */,
 				03ED601C2D1B855C0082E4A8 /* PewB.wav in Resources */,
 				03ED60132D1B61530082E4A8 /* Glass.aiff in Resources */,
 				03ED601A2D1B85530082E4A8 /* PewA.wav in Resources */,
 				03B032EA2BA7B0FE00FB060F /* Main.storyboard in Resources */,
 				03ED601E2D1B870A0082E4A8 /* Pew.mp3 in Resources */,
+				03AD8CCD2D1BB821003BA617 /* crash-7075.mp3 in Resources */,
 				03B032E12BA7B0FE00FB060F /* GameScene.sks in Resources */,
 				033C1E052BA8A88200A33A9E /* images.atlas in Resources */,
 				03B032EC2BA7B10000FB060F /* Assets.xcassets in Resources */,
