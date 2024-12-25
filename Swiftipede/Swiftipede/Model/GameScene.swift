@@ -172,9 +172,10 @@ class GameScene: SKScene, Observable {
       healMushrooms(inSequence: mushroomChildren[...])
    }
    
-   /// \ref issue54
+   /// \ref issue54 \ref issue87
    func processEndOfLevel() {
       healDamagedMushrooms()
+      Centipede.periodBetweenMoves *= 0.9 // Each level centipede is faster
    }
    
    /// \ref issue54

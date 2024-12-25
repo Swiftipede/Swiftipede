@@ -50,8 +50,9 @@ class Centipede : Hashable {
    /// \ref issue14
    var segments = [CentipedeSegment]()
    
-   /// \ref issue18 \ref issue15 \ref issue17
-   var periodBetweenMoves = TimeInterval(0.25)
+   /// \ref issue18 \ref issue15 \ref issue17 \ref issue87
+   static let initialPeriodBetweenMoves = TimeInterval(0.25)
+   static var periodBetweenMoves = initialPeriodBetweenMoves
    var headDestinationGAX = Int32(-1)
    var headDestinationGAY = Int32(39)
    var xDirection = Int32(1)
@@ -130,7 +131,7 @@ class Centipede : Hashable {
             let predecesorSegment = segments[index - 1]
             let destination = predecesorSegment.position
             currentSegment.xScale = (destination.x > currentSegment.position.x) ? 1 : -1
-            currentSegment.run(SKAction.move(to: destination, duration: periodBetweenMoves))
+            currentSegment.run(SKAction.move(to: destination, duration: Centipede.periodBetweenMoves))
          }
          
          let head = segments[0]
@@ -151,7 +152,7 @@ class Centipede : Hashable {
             headDestinationGAX += xDirection
          }
          let destination = scene.convertGAtoScene(gaX: headDestinationGAX, gaY: headDestinationGAY)
-         head.run(SKAction.move(to: destination, duration: periodBetweenMoves)) {
+         head.run(SKAction.move(to: destination, duration: Centipede.periodBetweenMoves)) {
             self.moveHead(scene: scene)
          }
       }
