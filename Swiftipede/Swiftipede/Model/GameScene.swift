@@ -50,6 +50,9 @@ class GameScene: SKScene, Observable {
    /// \ref issue42
    static let spider = prototypeNodes.childNode(withName: "Spider")!
    
+   /// \ref issue42
+   static let bonusLabel = prototypeNodes.childNode(withName: "BonusLabel")!
+   
    // MARK: - Audio Actions
    
    /// \ref issue49
@@ -149,7 +152,7 @@ class GameScene: SKScene, Observable {
       let newSprite = GameScene.spider.copy() as! SKSpriteNode
       newSprite.position = CGPoint()
       currentSpider!.addChild(newSprite)
-
+      
       addChild(currentSpider!)
       moveSpider()
    }
@@ -171,7 +174,8 @@ class GameScene: SKScene, Observable {
    }
    
    func spawnBonusScoreLabel(amount : Int) {
-      let newLabelNode = SKLabelNode(text: "\(amount)")
+      let newLabelNode = GameScene.bonusLabel.copy() as! SKLabelNode
+      newLabelNode.text = "\(amount)"
       newLabelNode.position = currentSpider!.position
       newLabelNode.fontColor = UIColor.white
       addChild(newLabelNode)

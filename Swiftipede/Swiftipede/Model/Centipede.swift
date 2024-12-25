@@ -70,7 +70,7 @@ class Centipede : Hashable {
             newCentipede!.headDestinationGAX = inScene.convertSceneXtoGAX(position: atSegment.position)
             newCentipede!.headDestinationGAY = inScene.convertSceneYtoGAY(position: atSegment.position) + yDirection
             newCentipede!.xDirection = -xDirection
-            newCentipede!.segments[0].xScale = CGFloat(xDirection)
+            newCentipede!.segments[0].xScale = CGFloat(newCentipede!.xDirection)
 
             newCentipede!.yDirection = yDirection
             inScene.registerCentipede(newCentipede!)
