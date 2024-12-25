@@ -44,6 +44,12 @@ class GameScene: SKScene, Observable {
    /// \ref issue16
    static let defaultMushroomsNumber = UInt32(70)
    
+   /// \ref issue26
+   static let maximumLivesRemainingNumber = 5
+   
+   /// \ref issue26
+   static let initialLivesRemainingNumber = 2
+   
    /// \ref issue9
    static let prototypeNodes = SKScene(fileNamed: "PrototypesScene.sks")!
    
@@ -97,6 +103,9 @@ class GameScene: SKScene, Observable {
    
    /// \ref issue3 \ref issue25
    @objc dynamic var score = Int(0)
+   
+   /// \ref issue26
+   @objc dynamic var livesRemainingNumber = -1 // arbitrary invalid number
    
    /// \ref issue54 Keep track of centipedes (and therfore segements) remaining
    var centipedes = Set<Centipede>()
@@ -211,9 +220,14 @@ class GameScene: SKScene, Observable {
       bullet.isHidden = true
       addChild(bullet)
    }
-   
+   /// \ref issue26 \ref issue27
    func killShooter() {
-      
+      if 0 < livesRemainingNumber {
+         livesRemainingNumber -= 1
+         healDamagedMushrooms()
+      } else {
+         // Game over
+      }
    }
    
    /// \ref issue21 \ref issue23
@@ -240,7 +254,7 @@ class GameScene: SKScene, Observable {
       score += amount
    }
    
-   /// \ref issue23
+   /// \ref issue23  \ref issue27
    func processShooterCollisions() {
       let dangerousCollisions = nodes(at: shooter.position).filter { (node: SKNode) in
          node !== self && node !== shooter && node !== bullet &&
@@ -265,12 +279,19 @@ class GameScene: SKScene, Observable {
       }
    }
    
-   /// \ref issue14 \ref issue16 \ref issue20
-   override func didMove(to view: SKView) {
+   func startGame() {
+      livesRemainingNumber = GameScene.initialLivesRemainingNumber
       spawnNewCentipede()
       spawnMushrooms(number: GameScene.defaultMushroomsNumber)
       spawnShooter()
       spawnBullet()
+   }
+   
+   /// \ref issue14 \ref issue16 \ref issue20
+   override func didMove(to view: SKView) {
+      DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
+         self.startGame()
+      })
    }
    
    /// \ref issue29
