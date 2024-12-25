@@ -26,29 +26,8 @@ extension SKNode {
 }
 
 class GameScene: SKScene, Observable {
-   /// \ref issue5
-   static let gameAreaWidth = Int32(25)
    
-   /// \ref issue5
-   static let gameAreaHeight = Int32(40)
-   
-   /// \ref issue19
-   static let playAreaStartGAY = Int32(10)
-   
-   /// \ref issue29
-   static let bulletDeltaY = CGFloat(16) ///<- Arbitrary fast move
-   
-   /// \ref issue14
-   static let defaultCentipedeSegementsNumber = UInt32(11)
-   
-   /// \ref issue16
-   static let defaultMushroomsNumber = UInt32(70)
-   
-   /// \ref issue26
-   static let maximumLivesRemainingNumber = 5
-   
-   /// \ref issue26
-   static let initialLivesRemainingNumber = 2
+   // MARK: - Prototype Nodes
    
    /// \ref issue9
    static let prototypeNodes = SKScene(fileNamed: "PrototypesScene.sks")!
@@ -68,8 +47,7 @@ class GameScene: SKScene, Observable {
    /// \ref issue29
    static let bullet = prototypeNodes.childNode(withName: "Bullet")!
    
-   /// \ref issue55
-   static let delayBetweenMushroomHeal = TimeInterval(0.1)
+   // MARK: - Audio Actions
    
    /// \ref issue49
    static let shootAudioAction = SKAction.playSoundFileNamed("Pew.mp3", waitForCompletion: false)
@@ -84,46 +62,8 @@ class GameScene: SKScene, Observable {
    static let newLifeAudioAction = SKAction.playSoundFileNamed("Blow.aiff", waitForCompletion: false)
    
    static let shooterDeathAudioAction = SKAction.playSoundFileNamed("crash-7075.mp3", waitForCompletion: false)
-
-   /// \ref issue9
-   static func makeCentipedeBodySegment() -> SKSpriteNode {
-      let newSegement = GameScene.cenitpedeBody.copy() as! SKSpriteNode
-      newSegement.isPaused = false
-      return newSegement
-   }
    
-   /// \ref issue9
-   static func makeCentipedeHeadSegment() -> SKSpriteNode {
-      let newSegement = GameScene.cenitpedeHead.copy() as! SKSpriteNode
-      newSegement.isPaused = false
-      return newSegement
-   }
-   
-   /// \ref issue11
-   static func makeCentipedeTailSegment() -> SKSpriteNode {
-      let newSegement = GameScene.cenitpedeTail.copy() as! SKSpriteNode
-      newSegement.isPaused = false
-      return newSegement
-   }
-   
-   /// \ref issue3 \ref issue25
-   @objc dynamic var score = Int(0)
-   
-   /// \ref issue26
-   @objc dynamic var livesRemainingNumber = -1 // arbitrary invalid number
-   
-   /// \ref issue54 Keep track of centipedes (and therfore segements) remaining
-   var centipedes = Set<Centipede>()
-   
-   /// \ref issue20
-   var shooter = GameScene.shooter.copy() as! SKSpriteNode
-   
-   /// \ref issue29
-   var bullet = GameScene.bullet.copy() as! SKSpriteNode
-   
-   var gameOverIndicator : SKNode?
-   
-   var isGameOver = true
+   // MARK: - Coordinate Conversions
    
    /// \ref issue9
    func convertGAtoScene(gaX: Int32, gaY:Int32) -> CGPoint {
@@ -150,8 +90,15 @@ class GameScene: SKScene, Observable {
       return Int32(position.y * CGFloat(GameScene.gameAreaHeight) / frame.height)
    }
    
+   // MARK: - Mushroom Management
+   
    /// \ref issue16
-   /// \ref issue2 \ref issue3 \ref issue37 \ref issue38
+   static let defaultMushroomsNumber = UInt32(70)
+   
+   /// \ref issue55
+   static let delayBetweenMushroomHeal = TimeInterval(0.1)
+   
+   /// \ref issue16 \ref issue2 \ref issue3 \ref issue37 \ref issue38
    func spawnMushrooms(number : UInt32) {
       for _ in 0..<number {
          let mushroomGAX = Int32.random(in: 0..<GameScene.gameAreaWidth)
@@ -183,7 +130,7 @@ class GameScene: SKScene, Observable {
             if 1 < inSequence.count {
                self.healMushrooms(inSequence: inSequence[..<(inSequence.count - 1)])
             } else {
-                self.shooter.isHidden = false
+               self.shooter.isHidden = false
             }
          }]))
       }
@@ -197,10 +144,33 @@ class GameScene: SKScene, Observable {
       healMushrooms(inSequence: mushroomChildren[...])
    }
    
-   /// \ref issue54 \ref issue87
-   func processEndOfLevel() {
-      healDamagedMushrooms()
-      Centipede.periodBetweenMoves *= 0.9 // Each level centipede is faster
+   // MARK: - Centipede Management
+   
+   /// \ref issue14
+   static let defaultCentipedeSegementsNumber = UInt32(11)
+   
+   /// \ref issue54 Keep track of centipedes (and therfore segements) remaining
+   var centipedes = Set<Centipede>()
+   
+   /// \ref issue9
+   static func makeCentipedeBodySegment() -> SKSpriteNode {
+      let newSegement = GameScene.cenitpedeBody.copy() as! SKSpriteNode
+      newSegement.isPaused = false
+      return newSegement
+   }
+   
+   /// \ref issue9
+   static func makeCentipedeHeadSegment() -> SKSpriteNode {
+      let newSegement = GameScene.cenitpedeHead.copy() as! SKSpriteNode
+      newSegement.isPaused = false
+      return newSegement
+   }
+   
+   /// \ref issue11
+   static func makeCentipedeTailSegment() -> SKSpriteNode {
+      let newSegement = GameScene.cenitpedeTail.copy() as! SKSpriteNode
+      newSegement.isPaused = false
+      return newSegement
    }
    
    /// \ref issue54
@@ -222,7 +192,7 @@ class GameScene: SKScene, Observable {
       }
       centipedes.removeAll()
    }
-
+   
    /// \ref issue57
    func spawnNewCentipede() {
       let centipede = Centipede()
@@ -231,6 +201,11 @@ class GameScene: SKScene, Observable {
       registerCentipede(centipede)
    }
    
+   // MARK: - Shooter
+   
+   /// \ref issue20
+   var shooter = GameScene.shooter.copy() as! SKSpriteNode
+   
    /// \ref issue20
    func spawnShooter() {
       addChild(shooter)
@@ -238,15 +213,10 @@ class GameScene: SKScene, Observable {
       shooter.isHidden = false
    }
    
-   /// \ref issue29
-   func spawnBullet() {
-      bullet.isHidden = true
-      addChild(bullet)
-   }
    /// \ref issue26 \ref issue27
    func killShooter() {
       self.run(GameScene.shooterDeathAudioAction)
-
+      
       if 0 < livesRemainingNumber {
          livesRemainingNumber -= 1
          healDamagedMushrooms()
@@ -279,12 +249,7 @@ class GameScene: SKScene, Observable {
       }
    }
    
-   /// \ref issue3
-   func incrementScore(_ amount: Int) {
-      score += amount
-   }
-   
-   /// \ref issue23  \ref issue27
+   /// \ref issue23 \ref issue27
    func processShooterCollisions() {
       let dangerousCollisions = nodes(at: shooter.position).filter { (node: SKNode) in
          node !== self && node !== shooter && node !== bullet &&
@@ -298,6 +263,20 @@ class GameScene: SKScene, Observable {
       }
    }
    
+   // MARK: - Bullet
+   
+   /// \ref issue29
+   static let bulletDeltaY = CGFloat(16) ///<- Arbitrary fast move
+   
+   /// \ref issue29
+   var bullet = GameScene.bullet.copy() as! SKSpriteNode
+   
+   /// \ref issue29
+   func spawnBullet() {
+      bullet.isHidden = true
+      addChild(bullet)
+   }
+   
    /// \ref issue2 \ref issue3 \ref issue37 \ref issue38
    func processBulletCollision() {
       let collideNodes = nodes(at: bullet.position).filter { (node : SKNode) in
@@ -309,6 +288,56 @@ class GameScene: SKScene, Observable {
       }
    }
    
+   // MARK: - Game State
+   
+   /// \ref issue5
+   static let gameAreaWidth = Int32(25)
+   
+   /// \ref issue5
+   static let gameAreaHeight = Int32(40)
+   
+   /// \ref issue19
+   static let playAreaStartGAY = Int32(10)
+   
+   /// \ref issue26
+   static let maximumLivesRemainingNumber = 5
+   
+   /// \ref issue26
+   static let initialLivesRemainingNumber = 2
+   
+   /// \ref issue52
+   static let pointsForNewLifeNumber = 10000
+   
+   /// \ref issue26
+   @objc dynamic var livesRemainingNumber = -1 // arbitrary invalid number
+   
+   /// \ref issue3 \ref issue25
+   @objc dynamic var score = Int(0)
+   
+   /// \ref issue52
+   var lastNewLifeThresholdCrossed = 0
+   
+   /// \ref issue3 \ref issue53
+   func incrementScore(_ amount: Int) {
+      score += amount
+      if score >= (lastNewLifeThresholdCrossed + GameScene.pointsForNewLifeNumber) {
+         lastNewLifeThresholdCrossed += GameScene.pointsForNewLifeNumber
+         livesRemainingNumber += 1
+         self.run(GameScene.newLifeAudioAction)
+      }
+   }
+   
+   var gameOverIndicator : SKNode?
+   
+   var isGameOver = true
+   
+   /// \ref issue54 \ref issue87
+   func processEndOfLevel() {
+      healDamagedMushrooms()
+      Centipede.periodBetweenMoves *= 0.9 // Each level centipede is faster
+      spawnNewCentipede()
+   }
+   
    func hideGameOverIndicator() {
       gameOverIndicator!.run(SKAction.sequence([SKAction.fadeOut(withDuration: 0.5), SKAction.removeFromParent()]))
    }
@@ -317,7 +346,7 @@ class GameScene: SKScene, Observable {
       self.addChild(gameOverIndicator!)
       gameOverIndicator!.run(SKAction.sequence([SKAction.fadeIn(withDuration: 0.5)]))
    }
-
+   
    func spawnGameNodes() {
       spawnNewCentipede()
       spawnMushrooms(number: GameScene.defaultMushroomsNumber)
@@ -337,6 +366,8 @@ class GameScene: SKScene, Observable {
       spawnGameNodes()
       spawnShooter()
    }
+   
+   // MARK: - SKScene overrides
    
    /// \ref issue14 \ref issue16 \ref issue20
    override func didMove(to view: SKView) {
