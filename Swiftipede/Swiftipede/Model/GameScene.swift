@@ -80,6 +80,11 @@ class GameScene: SKScene, Observable {
    /// \ref issue55
    static let healAudioAction = SKAction.playSoundFileNamed("Glass.aiff", waitForCompletion: false)
    
+   /// \ref issue53
+   static let newLifeAudioAction = SKAction.playSoundFileNamed("Blow.aiff", waitForCompletion: false)
+   
+   static let shooterDeathAudioAction = SKAction.playSoundFileNamed("crash-7075.mp3", waitForCompletion: false)
+
    /// \ref issue9
    static func makeCentipedeBodySegment() -> SKSpriteNode {
       let newSegement = GameScene.cenitpedeBody.copy() as! SKSpriteNode
@@ -240,6 +245,8 @@ class GameScene: SKScene, Observable {
    }
    /// \ref issue26 \ref issue27
    func killShooter() {
+      self.run(GameScene.shooterDeathAudioAction)
+
       if 0 < livesRemainingNumber {
          livesRemainingNumber -= 1
          healDamagedMushrooms()
