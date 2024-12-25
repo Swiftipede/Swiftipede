@@ -116,6 +116,10 @@ class GameScene: SKScene, Observable {
    /// \ref issue29
    var bullet = GameScene.bullet.copy() as! SKSpriteNode
    
+   var gameOverIndicator : SKNode?
+   
+   var isGameOver = true
+   
    /// \ref issue9
    func convertGAtoScene(gaX: Int32, gaY:Int32) -> CGPoint {
       return CGPoint(x: convertGAXToSceneX(gaX: gaX), y: convertGAYToSceneY(gaY: gaY))
@@ -154,6 +158,14 @@ class GameScene: SKScene, Observable {
       }
    }
    
+   func removeAllMushrooms() {
+      for node in children {
+         if node.isMushroom() {
+            node.removeFromParent()
+         }
+      }
+   }
+   
    /// \ref issue54 \ref issue56 \ref issue57
    func healMushrooms(inSequence : ArraySlice<SKNode>) {
       if 0 < inSequence.count {
@@ -166,8 +178,7 @@ class GameScene: SKScene, Observable {
             if 1 < inSequence.count {
                self.healMushrooms(inSequence: inSequence[..<(inSequence.count - 1)])
             } else {
-               self.spawnNewCentipede() // \ref issue57
-               self.shooter.isHidden = false
+                self.shooter.isHidden = false
             }
          }]))
       }
@@ -200,6 +211,13 @@ class GameScene: SKScene, Observable {
       }
    }
    
+   func removeAllCentipedes() {
+      for centipede in centipedes {
+         centipede.removeAllSegements()
+      }
+      centipedes.removeAll()
+   }
+
    /// \ref issue57
    func spawnNewCentipede() {
       let centipede = Centipede()
@@ -226,12 +244,17 @@ class GameScene: SKScene, Observable {
          livesRemainingNumber -= 1
          healDamagedMushrooms()
       } else {
-         // Game over
+         showGameOverIndicator()
+         shooter.isHidden = true
+         isGameOver = true
       }
    }
    
    /// \ref issue21 \ref issue23
    func moveShooter(position: CGPoint) {
+      if isGameOver {
+         startGame()
+      }
       if shooter.isHidden == false {
          let maxY = min(position.y, convertGAYToSceneY(gaY: GameScene.playAreaStartGAY))
          let collideNodes = nodes(at: position).filter { (node : SKNode) in
@@ -279,19 +302,40 @@ class GameScene: SKScene, Observable {
       }
    }
    
-   func startGame() {
-      livesRemainingNumber = GameScene.initialLivesRemainingNumber
+   func hideGameOverIndicator() {
+      gameOverIndicator!.run(SKAction.sequence([SKAction.fadeOut(withDuration: 0.5), SKAction.removeFromParent()]))
+   }
+   
+   func showGameOverIndicator() {
+      self.addChild(gameOverIndicator!)
+      gameOverIndicator!.run(SKAction.sequence([SKAction.fadeIn(withDuration: 0.5)]))
+   }
+
+   func spawnGameNodes() {
       spawnNewCentipede()
       spawnMushrooms(number: GameScene.defaultMushroomsNumber)
-      spawnShooter()
       spawnBullet()
+   }
+   
+   func startGame() {
+      score = 0
+      removeAllCentipedes()
+      removeAllMushrooms()
+      livesRemainingNumber = GameScene.initialLivesRemainingNumber
+      shooter.removeFromParent()
+      bullet.removeFromParent()
+      isGameOver = false
+      
+      hideGameOverIndicator()
+      spawnGameNodes()
+      spawnShooter()
    }
    
    /// \ref issue14 \ref issue16 \ref issue20
    override func didMove(to view: SKView) {
-      DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
-         self.startGame()
-      })
+      gameOverIndicator = self.childNode(withName: "GameOver")!
+      gameOverIndicator!.position = CGPoint(x: 0.5 * frame.width, y: 0.6 * frame.height)
+      spawnGameNodes()
    }
    
    /// \ref issue29

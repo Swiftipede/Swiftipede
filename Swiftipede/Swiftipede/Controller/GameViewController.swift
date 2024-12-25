@@ -15,10 +15,19 @@ class GameViewController: UIViewController {
    /// \ref issue3 \ref issue25
    @IBOutlet var scoreLabel : UILabel?
    
+   /// \ref issue39
    @IBOutlet var remainingLifeIndicator0 : UIImageView?
+   
+   /// \ref issue39
    @IBOutlet var remainingLifeIndicator1 : UIImageView?
+   
+   /// \ref issue39
    @IBOutlet var remainingLifeIndicator2 : UIImageView?
+   
+   /// \ref issue39
    @IBOutlet var remainingLifeIndicator3 : UIImageView?
+   
+   /// \ref issue39
    @IBOutlet var remainingLifeIndicator4 : UIImageView?
 
    /// \ref issue3
@@ -41,7 +50,7 @@ class GameViewController: UIViewController {
          self.scoreLabel!.text = "\(change.newValue!)"
       }
       
-      /// \ref issue26
+      /// \ref issue26 \ref issue39
       scoreObservation = observe(
           \.gameScene!.livesRemainingNumber,
           options: [.new]
