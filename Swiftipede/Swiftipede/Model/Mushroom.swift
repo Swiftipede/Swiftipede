@@ -51,6 +51,7 @@ class Mushroom : SKNode {
          addChild(mushroomSprite)
       } else {
          inScene.incrementScore(1)
+         removeFromParent()
       }
    }
 }

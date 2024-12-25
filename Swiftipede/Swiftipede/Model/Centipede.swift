@@ -51,7 +51,7 @@ class Centipede : Hashable {
    var segments = [CentipedeSegment]()
    
    /// \ref issue18 \ref issue15 \ref issue17 \ref issue87
-   static let initialPeriodBetweenMoves = TimeInterval(0.25)
+   static let initialPeriodBetweenMoves = TimeInterval(0.125)
    static var periodBetweenMoves = initialPeriodBetweenMoves
    var headDestinationGAX = Int32(-1)
    var headDestinationGAY = Int32(39)
@@ -112,6 +112,13 @@ class Centipede : Hashable {
          segments[0].becomeHead()
          if 1 < segments.count { segments[segments.count - 1].becomeTail() }
       }
+   }
+   
+   func removeAllSegements() {
+      for segment in segments {
+         segment.removeFromParent()
+      }
+      segments.removeAll()
    }
    
    /// \ref issue4 \ref issue24 \ref issue30
