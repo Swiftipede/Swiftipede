@@ -36,6 +36,9 @@ class GameViewController: UIViewController {
    /// \ref issue3
    var scoreObservation: NSKeyValueObservation?
 
+   /// \ref issue26 \ref issue39
+   var livesObservation: NSKeyValueObservation?
+
    /// \ref issue3
    override func viewDidLoad() {
       super.viewDidLoad()
@@ -51,7 +54,7 @@ class GameViewController: UIViewController {
       }
       
       /// \ref issue26 \ref issue39
-      scoreObservation = observe(
+      livesObservation = observe(
           \.gameScene!.livesRemainingNumber,
           options: [.new]
       ) { object, change in
