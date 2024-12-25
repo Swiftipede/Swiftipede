@@ -68,6 +68,9 @@ class GameScene: SKScene, Observable {
    /// \ref issue49
    static let shootAudioAction = SKAction.playSoundFileNamed("Pew.mp3", waitForCompletion: false)
    
+   /// \ref issue50
+   static let hitAudioAction = SKAction.playSoundFileNamed("Pop.aiff", waitForCompletion: false)
+
    /// \ref issue55
    static let healAudioAction = SKAction.playSoundFileNamed("Glass.aiff", waitForCompletion: false)
 
@@ -208,14 +211,6 @@ class GameScene: SKScene, Observable {
       addChild(bullet)
    }
    
-   /// \ref issue14 \ref issue16 \ref issue20
-   override func didMove(to view: SKView) {
-      spawnNewCentipede()
-      spawnMushrooms(number: GameScene.defaultMushroomsNumber)
-      spawnShooter()
-      spawnBullet()
-   }
-   
    /// \ref issue21
    func moveShooter(position: CGPoint) {
       if shooter.isHidden == false {
@@ -223,7 +218,7 @@ class GameScene: SKScene, Observable {
          if bullet.isHidden {
             bullet.position = shooter.position
             bullet.isHidden = false
-            bullet.run(GameScene.shootAudioAction)
+            self.run(GameScene.shootAudioAction)
          }
       }
    }
@@ -244,6 +239,14 @@ class GameScene: SKScene, Observable {
       }
    }
    
+   /// \ref issue14 \ref issue16 \ref issue20
+   override func didMove(to view: SKView) {
+      spawnNewCentipede()
+      spawnMushrooms(number: GameScene.defaultMushroomsNumber)
+      spawnShooter()
+      spawnBullet()
+   }
+
    /// \ref issue29
    override func update(_ currentTime: TimeInterval) {
       if !bullet.isHidden {
