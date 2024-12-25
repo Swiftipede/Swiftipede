@@ -34,6 +34,7 @@ class CentipedeSegment : SKNode {
          newCentipede.moveHead(scene: inScene)
       }
       inScene.incrementScore(1)
+      self.run(GameScene.hitAudioAction)
    }
 }
 
