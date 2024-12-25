@@ -47,6 +47,9 @@ class GameScene: SKScene, Observable {
    /// \ref issue29
    static let bullet = prototypeNodes.childNode(withName: "Bullet")!
    
+   /// \ref issue42
+   static let spider = prototypeNodes.childNode(withName: "Spider")!
+   
    // MARK: - Audio Actions
    
    /// \ref issue49
@@ -88,6 +91,110 @@ class GameScene: SKScene, Observable {
    /// \ref issue5 : Convert from game coordinates to scene coordinates
    func convertSceneYtoGAY(position: CGPoint) -> Int32 {
       return Int32(position.y * CGFloat(GameScene.gameAreaHeight) / frame.height)
+   }
+   
+   // MARK: - Spider Management
+   
+   /// \ref issue44
+   static let initialAveragePeriodBetweenSpiders = TimeInterval(10.0)
+   
+   var distanceSquaredFor1000Points : CGFloat {
+      get {
+         return (2.0 * frame.width / CGFloat(GameScene.gameAreaWidth)) * (2.0 * frame.width / CGFloat(GameScene.gameAreaWidth))
+      }
+   }
+   
+   var distanceSquaredFor500Points : CGFloat {
+      get {
+         return (6.0 * frame.width / CGFloat(GameScene.gameAreaWidth)) * (6.0 * frame.width / CGFloat(GameScene.gameAreaWidth))
+      }
+   }
+   
+   /// \ref issue44
+   var currentAveragePeriodBetweenSpiders = initialAveragePeriodBetweenSpiders
+   
+   /// \ref issue42
+   var currentSpider : Spider?
+   
+   func moveSpider() {
+      let minNextX = currentSpider!.position.x - (0.2 * frame.width)
+      let maxNextX = currentSpider!.position.x
+      let minNextY = max(0, currentSpider!.position.y - (0.4 * frame.height))
+      let maxNextY = min(frame.height, currentSpider!.position.y + (0.4 * frame.height))
+      let nextSpiderX = CGFloat.random(in: minNextX...maxNextX)
+      let nextSpiderY = CGFloat.random(in: minNextY...maxNextY)
+      currentSpider!.run(SKAction.sequence([SKAction.move(to: CGPoint(x: nextSpiderX, y: nextSpiderY), duration: 0.5), SKAction.run {
+         if let spider = self.currentSpider {
+            if 0.0 > spider.position.x {
+               spider.removeFromParent()
+               self.removeCurrentSpider()
+            } else {
+               self.moveSpider()
+            }
+         }
+      }]))
+   }
+   
+   func spawnSpider() {
+      if let spider = currentSpider {
+         spider.removeAllActions()
+         spider.removeFromParent()
+         currentSpider = nil
+      }
+      let newSpiderX = self.frame.width
+      let rangeY : Range<CGFloat> = (CGFloat(0.25) * frame.height)..<frame.height
+      let newSpiderY = CGFloat.random(in: rangeY)
+      currentSpider = Spider()
+      currentSpider!.position = CGPoint(x: newSpiderX, y: newSpiderY)
+      let newSprite = GameScene.spider.copy() as! SKSpriteNode
+      newSprite.position = CGPoint()
+      currentSpider!.addChild(newSprite)
+
+      addChild(currentSpider!)
+      moveSpider()
+   }
+   
+   func scheduleFutureSpider() {
+      run(SKAction.sequence([SKAction.wait(forDuration: self.currentAveragePeriodBetweenSpiders, withRange: 0.5 * self.currentAveragePeriodBetweenSpiders), SKAction.run {
+         self.spawnSpider()
+      }]))
+   }
+   
+   func removeCurrentSpider() {
+      if let spider = currentSpider {
+         spider.removeAllActions()
+         spider.removeFromParent()
+         currentSpider = nil
+         currentAveragePeriodBetweenSpiders *= 0.9
+      }
+      scheduleFutureSpider()
+   }
+   
+   func spawnBonusScoreLabel(amount : Int) {
+      let newLabelNode = SKLabelNode(text: "\(amount)")
+      newLabelNode.position = currentSpider!.position
+      newLabelNode.fontColor = UIColor.white
+      addChild(newLabelNode)
+      newLabelNode.run(SKAction.sequence([SKAction.group([SKAction.move(to: CGPoint(x:0.5 * frame.width, y: frame.height), duration: 1.5), SKAction.fadeOut(withDuration: 1.5)]), SKAction.removeFromParent()]))
+   }
+   
+   func killCurrentSpider() {
+      if let spider = currentSpider {
+         let deltaXToCurrentSpider = spider.position.x - shooter.position.x
+         let deltaYToCurrentSpider = spider.position.y - shooter.position.y
+         let distanceSquaredToCurrentSpider = deltaXToCurrentSpider * deltaXToCurrentSpider + deltaYToCurrentSpider * deltaYToCurrentSpider
+         if distanceSquaredFor1000Points >= distanceSquaredToCurrentSpider {
+            incrementScore(1000)
+            spawnBonusScoreLabel(amount: 1000)
+         } else if distanceSquaredFor500Points >= distanceSquaredToCurrentSpider {
+            incrementScore(500)
+            spawnBonusScoreLabel(amount: 500)
+         } else {
+            incrementScore(100)
+            spawnBonusScoreLabel(amount: 100)
+         }
+         removeCurrentSpider()
+      }
    }
    
    // MARK: - Mushroom Management
@@ -256,10 +363,10 @@ class GameScene: SKScene, Observable {
          !node.isMushroom()
       }
       if 0 != dangerousCollisions.count {
-         killShooter()
          for node in dangerousCollisions {
             node.takeDamage(inScene: self)
          }
+         killShooter()
       }
    }
    
@@ -357,7 +464,10 @@ class GameScene: SKScene, Observable {
       score = 0
       removeAllCentipedes()
       removeAllMushrooms()
+      removeCurrentSpider()
       livesRemainingNumber = GameScene.initialLivesRemainingNumber
+      currentAveragePeriodBetweenSpiders = GameScene.initialAveragePeriodBetweenSpiders
+      
       shooter.removeFromParent()
       bullet.removeFromParent()
       isGameOver = false
@@ -365,6 +475,7 @@ class GameScene: SKScene, Observable {
       hideGameOverIndicator()
       spawnGameNodes()
       spawnShooter()
+      scheduleFutureSpider()
    }
    
    // MARK: - SKScene overrides
