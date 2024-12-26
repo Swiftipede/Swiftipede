@@ -18,9 +18,9 @@ extension SKNode {
       return result
    }
    
-   @objc func takeDamage(inScene : GameScene) {
+   @objc func takeDamage(scene : GameScene) {
       if nil != parent {
-         parent!.takeDamage(inScene: inScene)
+         parent!.takeDamage(scene: scene)
       }
    }
 }
@@ -232,18 +232,15 @@ class GameScene: SKScene, Observable {
    /// \ref issue54 \ref issue56 \ref issue57
    func healMushrooms(inSequence : ArraySlice<SKNode>) {
       if 0 < inSequence.count {
-         shooter.isHidden = true
          let mushroom = inSequence.last as! Mushroom
          mushroom.run(SKAction.sequence([SKAction.wait(forDuration: 0.1), SKAction.run {
             mushroom.heal()
             self.incrementScore(1) // \ref issue56
             mushroom.run(GameScene.healAudioAction)
-            if 1 < inSequence.count {
-               self.healMushrooms(inSequence: inSequence[..<(inSequence.count - 1)])
-            } else {
-               self.shooter.isHidden = false
-            }
+            self.healMushrooms(inSequence: inSequence[..<(inSequence.count - 1)])
          }]))
+      } else {
+         self.shooter.isHidden = false
       }
    }
    
@@ -252,6 +249,7 @@ class GameScene: SKScene, Observable {
       let mushroomChildren : [SKNode] = children.filter({ (node : SKNode) in
          return node.isMushroom() && (0 != (node as! Mushroom).state)
       })
+      shooter.isHidden = true
       healMushrooms(inSequence: mushroomChildren[...])
    }
    
@@ -304,12 +302,30 @@ class GameScene: SKScene, Observable {
       centipedes.removeAll()
    }
    
+   /// \ref issue102
+   func periodicallySpawnCentipedeHead() {
+      if shouldSpawnNewCentipedeHeads {
+         DispatchQueue.main.asyncAfter(deadline: .now() + GameScene.intervaleBetweenSpawningNewCentipedeHeads) {
+            // Make sure shouldSpawnNewCentipedeHeads is still set after delay
+            if self.shouldSpawnNewCentipedeHeads {
+               let newCentipede = Centipede()
+               self.registerCentipede(newCentipede)
+               newCentipede.headDestinationGAX = 0
+               newCentipede.headDestinationGAY = 4
+               newCentipede.addSegments(number: 1, scene: self)
+               newCentipede.moveHead(scene: self)
+               self.periodicallySpawnCentipedeHead()
+            }
+         }
+      }
+   }
    /// \ref issue57
    func spawnNewCentipede() {
       let centipede = Centipede()
+      registerCentipede(centipede)
       centipede.addSegments(number: GameScene.defaultCentipedeSegementsNumber, scene: self)
       centipede.moveHead(scene: self)
-      registerCentipede(centipede)
+      shouldSpawnNewCentipedeHeads = false
    }
    
    // MARK: - Shooter
@@ -368,7 +384,7 @@ class GameScene: SKScene, Observable {
       }
       if 0 != dangerousCollisions.count {
          for node in dangerousCollisions {
-            node.takeDamage(inScene: self)
+            node.takeDamage(scene: self)
          }
          killShooter()
       }
@@ -395,7 +411,7 @@ class GameScene: SKScene, Observable {
       }
       if 0 < collideNodes.count {
          bullet.isHidden = true
-         collideNodes[0].takeDamage(inScene: self)
+         collideNodes[0].takeDamage(scene: self)
       }
    }
    
@@ -418,6 +434,9 @@ class GameScene: SKScene, Observable {
    
    /// \ref issue52
    static let pointsForNewLifeNumber = 10000
+   
+   /// \ref issue102
+   static let intervaleBetweenSpawningNewCentipedeHeads = TimeInterval(5)
    
    /// \ref issue26
    @objc dynamic var livesRemainingNumber = -1 // arbitrary invalid number
@@ -442,8 +461,18 @@ class GameScene: SKScene, Observable {
    
    var isGameOver = true
    
+   /// \ref issue102
+   var shouldSpawnNewCentipedeHeads = false {
+      didSet {
+         if shouldSpawnNewCentipedeHeads {
+            periodicallySpawnCentipedeHead()
+         }
+      }
+   }
+   
    /// \ref issue54 \ref issue87
    func processEndOfLevel() {
+      shouldSpawnNewCentipedeHeads = false
       healDamagedMushrooms()
       Centipede.periodBetweenMoves *= 0.9 // Each level centipede is faster
       spawnNewCentipede()
@@ -471,6 +500,7 @@ class GameScene: SKScene, Observable {
       removeCurrentSpider()
       livesRemainingNumber = GameScene.initialLivesRemainingNumber
       currentAveragePeriodBetweenSpiders = GameScene.initialAveragePeriodBetweenSpiders
+      shouldSpawnNewCentipedeHeads = false
       
       shooter.removeFromParent()
       bullet.removeFromParent()
