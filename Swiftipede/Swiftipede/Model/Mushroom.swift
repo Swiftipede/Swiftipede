@@ -42,7 +42,7 @@ class Mushroom : SKNode {
    }
    
    /// \ref issue2 \ref issue3 \ref issue37 \ref issue38 \ref issue36
-   override func takeDamage(inScene : GameScene) {
+   override func takeDamage(scene : GameScene) {
       mushroomSprite.removeFromParent()
       state += 1
       if state < Mushroom.mushroomStates.count {
@@ -50,7 +50,7 @@ class Mushroom : SKNode {
          mushroomSprite.position = CGPoint(x: 0, y: 0)
          addChild(mushroomSprite)
       } else {
-         inScene.incrementScore(1)
+         scene.incrementScore(1)
          removeFromParent()
       }
    }
